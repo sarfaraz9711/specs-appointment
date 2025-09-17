@@ -1,0 +1,66 @@
+import BreadCrumb from "../elements/BreadCrumb";
+import { Tabs } from "antd";
+import { useEffect, useState } from 'react';
+import { getLookbookTabInfo } from "../../api";
+import { imageUrl } from "../../api/url";
+import Router from "next/router";
+const { TabPane } = Tabs;
+function Lookbookcomp() {
+    const [tabInfo, setTabInfo] = useState("/static/img/casual.jpg");
+
+    const breadCrumb = [
+        {
+            text: 'Home',
+            url: '/',
+        },
+        {
+            text: 'Look Book',
+        },
+    ];
+
+    useEffect(() => {
+        getLookbookTabInfo("lookbook-tabl", setTabInfo)
+    }, [])
+    const tabChangeScroll = async(currenttab) => {
+        console.log(currenttab);
+        await getLookbookTabInfo(currenttab, setTabInfo)
+
+
+    };
+
+    const goToUrl = async (url) => {
+        
+        Router.push(url);
+      }
+    return (
+
+        <div className="lookbook">
+            <BreadCrumb breacrumb={breadCrumb} />
+            <Tabs
+
+                onTabClick={(e) => tabChangeScroll(e)}
+            >
+                <TabPane
+                    tab={("CASUAL")}
+                    key="lookbook-tabl"
+                ></TabPane>
+                <TabPane
+                    tab={("SPRINGER")}
+                    key="lookbook-tab2"
+                ></TabPane>
+                <TabPane
+                    tab={("FORMAL")}
+                    key="lookbook-tab3">
+
+                </TabPane>
+            </Tabs>
+            {/* <img src={tabimage} /> */}
+
+            <a onClick={(e) => goToUrl(tabInfo.link)} href="javascript:void(0);">
+            <img src={imageUrl + "?path=&name=" + tabInfo?.imagePath + "&width=1366&height=506"} />
+            </a>
+        </div>
+
+    )
+}
+export default Lookbookcomp;

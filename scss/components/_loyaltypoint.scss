@@ -1,0 +1,34 @@
+
+
+    .loyality-main-contain{
+        .coupon{
+            border: 5px dotted #bbb;
+            width: 33%;
+        }
+       
+    }
+
+   .loyality-account-container {
+        padding: 0 16px;
+        background-color: #f1f1f1;
+        padding-bottom: 16px;
+    }
+
+
+    .loyality-account-subcontainer{
+        position: relative;
+        z-index: 1;
+        box-sizing: border-box;
+        display: block;
+        background: #fff !important;
+    }
+
+
+    .loyality-position-container {
+        display: flex;
+        flex-flow: row nowrap;
+        min-height: 200px;
+    }
+
+
+

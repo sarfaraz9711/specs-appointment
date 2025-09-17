@@ -1,0 +1,58 @@
+.bank-select {
+    border: 1px solid #000;
+    padding: 0px;
+    border-radius: 5px;
+    position: relative;
+}
+
+.bank-select:after {
+    content: "";
+    position: absolute;
+    top: 13px;
+    right: 7px;
+    border-right: 4px solid transparent;
+    border-top: 4px dashed;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+}
+
+.bank-option {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.bank-select-option .bank-option:hover {
+    background-color: #1a73e8;
+    color: #fff;
+}
+
+.bank-option:last-child {
+    border-bottom: none;
+}
+
+.bank-option img {
+    width: 20px;
+}
+
+.bank-option-selected {
+    cursor: default;
+}
+
+.bank-select-option {
+    position: absolute;
+    top: 35px;
+    height: 138px;
+    display: none;
+    width: 100%;
+    box-shadow: 0px 7px 10px 0px #c3bcbc;
+    border: 1px solid #000;
+    border-radius: 0px 0px 5px 5px;
+    background-color: #fff;
+    overflow: auto;
+}
+.payment-option{border-bottom: 1px solid #000; margin-bottom: 16px;}
+.payment-option li{cursor: pointer; list-style: none; border-bottom: 1px solid #ddd; padding: 5px;}
+.payment-option li:hover, .option-selected{background-color: #1a73e8; color: #fff}

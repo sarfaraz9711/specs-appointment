@@ -1,0 +1,129 @@
+.custom-report-containor{
+    display: block;
+    // padding: 24px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    overflow: auto;
+    outline: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 240px;
+    max-height: inherit;
+
+    h2{
+        margin: 0 0 20px;
+    display: block;
+    font-weight: 500;
+    font-stretch: normal;
+    font-size: 20px;
+    }
+}
+
+.report-exit{
+    float: right;
+    background-color: #fff;
+    border: none;
+    cursor: pointer;
+    width: 30px;
+    font-size: 30px;
+    outline: 0;
+
+    span{
+
+    }
+}
+
+.report-content{
+    display: block;
+    // margin: 0 -24px;
+    padding: 0 24px
+}
+
+.report-form-container{
+    margin: 15px;
+}
+
+.report-main-containor{
+    display: flex;
+    flex-direction: row;
+    // flex-wrap: wrap;
+    width: 100%;
+}
+
+.report-reason{
+    display: flex;
+    flex-direction: column;
+    // flex-basis: 100%;
+    flex: 1;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 100%;
+}
+
+.report-left-column{
+    height: 100px;
+}
+
+.report-custom-select{
+    margin-top: 10px!important;
+    padding: 10px!important;
+    background-color: #fff;
+    width: 100%;
+    border: 1px solid #d0d0d0;
+}
+
+.report-custom-remark{
+    display: flex;
+    flex-direction: column;
+    // flex-basis: 100%;
+    // flex: 1;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 100%;
+}
+
+.report-custom-right{
+    height: 100px;
+
+    label{
+        padding-left: 20px;
+    }
+
+    textarea{
+        width: 95%;
+        margin: 5px 5px 0 20px;
+        height: 70px;
+        resize: none;
+        border: 1px solid #d6d6d6;
+        text-indent: 10px;
+        outline: 0;
+        padding-top: 10px;
+    }
+}
+
+.report-submit{
+    padding: 8px 0;
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 52px;
+    align-items: center;
+    margin-bottom: -24px;
+    justify-content: flex-end;
+    margin-top: 30px;
+    margin-right: 30px;
+
+    button{
+        font-size: 14px;
+    margin-left: 10px;
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+    color: rgba(0,0,0,.87);
+    background-color: #fff;
+    border: 0;
+    }
+
+}
+
+
+.report-error{
+    color:red;
+}

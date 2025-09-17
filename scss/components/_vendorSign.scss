@@ -1,0 +1,219 @@
+.vendor-sign-container {
+    flex-flow: row wrap;
+    box-sizing: border-box;
+    display: flex;
+    place-content: stretch space-around;
+    align-items: center;
+    justify-content: center;
+    padding-top: 40px;
+    flex-direction: column;
+    h3 {
+        font-size: 28px;
+        font-weight: 400;
+        color: #2e384d;
+        margin-bottom: 14px;
+        width: 100%;
+        text-align: left;
+    }
+}
+
+.vendor-my-account {
+    background-color: #f1f3f6;
+}
+
+.vendor-sign-bordercontain {
+    margin-top: 20px!important;
+    border-top: 1px solid hsla(0,0%,80%,.6);
+    width: 100%!important;
+}
+
+.vendor-sign-form {
+    flex-flow: row wrap;
+    box-sizing: border-box;
+    display: flex;
+}
+// .vendor-main-contain {
+//     flex-flow: row wrap;
+//     box-sizing: border-box;
+//     display: flex;
+// }
+// .vendor-sign-input-container {
+//     flex: 1 1 51%;
+//     box-sizing: border-box;
+//     max-width: 51%;
+//     margin-left: 25% !important;
+//     padding: 0 10px!important;
+    
+// }
+
+// .vendo-sign-input-subContainer {
+//     display: inline-block;
+//     position: relative;
+//     text-align: left;
+//     font-size: inherit;
+//     font-weight: 400;
+//     line-height: 1.125;
+//     letter-spacing: normal;
+//     width: 100%!important;
+// }
+
+// .vendor-sign-input-container {
+//     flex: 1 1 51%;
+//     box-sizing: border-box;
+//     max-width: 51%;
+//     margin-left: 25% !important;
+    
+// }
+
+// .vendor-sign-input-subcontainer {
+//     display: block;
+//     position: relative;
+//     flex: auto;
+//     min-width: 0;
+//     width: 180px;
+
+//     input {
+
+//     }
+
+//     span {
+//         position: absolute;
+//         left: 0;
+//         box-sizing: content-box;
+//         width: 100%;
+//         height: 100%;
+//         overflow: hidden;
+//         pointer-events: none;
+//     }
+// }
+
+.vendor-main-contain {
+    justify-content: center;
+    width: 288px;
+}
+
+.vendor-sign-input-container {
+    position: relative;
+    display: block;
+    margin-bottom: 15px;
+    p {
+        font-size: 12px;
+        font-weight: 400;
+        color: #656f80;
+        margin-bottom: 2px;
+    }
+    .vendor-sign-input {
+        width: 100%;
+        border: solid thin #c8ddff;
+        color: #2e384d;
+        border-radius: 3px;
+        background: rgba(40,116,240,.05);
+        font-size: 14px;
+        font-weight: 400;
+        height: 40px;
+        padding: 0 16px;
+    }
+    .custom-field-error {
+        color: #ff5252;
+    }
+}
+
+
+
+.vendor-double-input {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.vendor-pass-container {
+    display: flex;
+    width: 49%;
+    flex-direction: column;
+
+    input {
+        width: 100%;
+        border: 0;
+        border-bottom: solid;
+        border-bottom-width: 1px;
+        border-bottom-color: rgba(0,0,0,.87);
+        background-color: transparent;
+        z-index: 4;
+        position: relative;
+    }
+
+    // label {
+    //     position: relative;
+    //     top: -23px;
+    //     z-index: 0 ;
+    // }
+}
+.vendor-sign-label {
+    position: relative;
+    top: -26px;
+    z-index: 0 ;
+    margin-bottom: 0;
+}
+
+.vendor-sign-label-focus {
+    position: relative;
+    top: -42px;
+    z-index: 0 ;
+    font-size: 12px;
+    margin-bottom: 0;
+}
+
+.vendor-sign-label {
+    position: relative;
+    top: -26px;
+    z-index: 0 ;
+    margin-bottom: 0;
+}
+
+.vendor-sign-label-focus {
+    position: relative;
+    top: -42px;
+    z-index: 0 ;
+    font-size: 12px;
+    margin-bottom: 0;
+}
+
+.vendor-policy-agree {
+    padding: 0px 0 20px!important;
+    text-align: center;
+    width: 100%!important;
+
+    input {
+        margin: 8px;
+        cursor: pointer !important;
+        outline: none;
+    }
+
+    button {
+        box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+        background-color: #1976d2;
+        color: #fff;
+        vertical-align: baseline;
+        text-align: center;
+        margin: 0;
+        min-width: 64px;
+        line-height: 40px;
+        padding: 0 16px;
+        border-radius: 4px;
+        user-select: none;
+        cursor: pointer;
+        min-height: 40px;
+        border: 0;
+        width: 100%;
+    }
+    &:last-child {
+        margin-bottom: 50px;
+    }
+}
+
+.vendor-error-span {
+    left: -88px;
+    position: relative;
+    color: rgb(255, 82, 82);
+}

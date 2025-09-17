@@ -1,0 +1,127 @@
+.ma-pa{
+    margin: 0;
+    padding: 0;
+}
+
+.ps-product-question{
+    flex-flow: row wrap;
+    flex-direction: row;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    display: flex;
+}
+
+.product-question-containor{
+    flex-direction: row;
+    box-sizing: border-box;
+    display: flex;
+    place-content: stretch space-between;
+    align-items: stretch;
+    // flex: 1 1 100%;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 100%;
+    max-width: 100%;
+    padding: 0 10px;
+
+}
+
+.ps-img-left-containor{
+    width: 350px;
+    padding: 20px!important;
+
+    p{
+        font-size: 13px;
+    font-weight: 500;
+    color: #222;
+    margin-bottom: 10px;
+    }
+
+    h3{
+        font-size: 17px;
+    font-weight: 700;
+    color: #fcb800;
+    }
+
+    .ps-ques-image{
+        width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+
+    img{
+        max-width: 100%;
+        width: auto;
+    }
+    }
+}
+
+.ps-right-ques-containor{
+    width: calc(100% - 350px);
+    border-left: 1px solid #dfdfdf;
+}
+
+.ps-right-ques-heading{
+    flex-direction: row;
+    box-sizing: border-box;
+    display: flex;
+    max-height: 100%;
+    place-content: center space-between;
+    align-items: center;
+    padding: 20px!important;
+
+    h2{
+        font-size: 20px;
+    font-weight: 500;
+    color: #222;
+    }
+}
+
+.ps-product-ques-search{
+    flex-direction: row;
+    box-sizing: border-box;
+    display: flex;
+    max-height: 100%;
+    place-content: center flex-start;
+    align-items: center;
+    border: 1px solid #e1e1e1;
+    background-color: #fafafa;
+    padding: 0 15px;
+    margin: 0 15px;
+    position: relative;
+
+    button{
+        border: 0;
+        background: 0 0;
+        color: #acacac;
+        cursor: pointer;
+
+        i{
+            background-repeat: no-repeat;
+            display: inline-block;
+            fill: currentColor;
+            height: 24px;
+            width: 24px;
+            font-size: 25px;
+        }
+    }
+
+    input{
+        width: calc(100% - 50px);
+        padding: 15px 15px 15px 25px;
+        font-size: 15px;
+        font-weight: 400;
+        color: #222;
+        border: 0;
+        background: 0 0;
+    }
+}
+
+.question-answer-padding{
+    margin: 0 15px;
+}
+
+.ques-no-result{
+    // justify-content: center;
+    // align-items: center;
+    padding-left: 20px;
+}
