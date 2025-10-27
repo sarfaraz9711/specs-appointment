@@ -45,29 +45,21 @@ function HomeBanner(data) {
         <div className="ps-section__left">
           <Slider {...carouselSetting} className="ps-carousel">
             {data.data.length>0 && data.data.map((product) => (
-              
-              <div className="ps-banner" key={product.bannerId}>
-                <a onClick={(e) => clickForCounter(product.link, product.bannerId)} href="javascript:void(0);" title={product.title}>
-                  <div className="home-banner-custom-img-contain">
-                    {/* <img
-                      src={
-                        imageUrl +
-                        "?path=" +
-                        product.imagePath +
-                        "&name=" +
-                        product.image +
-                        "&width=1366&height=506"
-                      }
-                      // "/static/img/slider/home-1/slide-1.jpg"
-                      alt="martfury"
-                    // height="400px"
-                    // width= "802px"
-                    // style={{height:"400px",width:"802px"}}
-                    ></img> */}
-                    <DisplayImageWithS3PreSignedUrl imageKey={product.imagePath+product.image} resizeRequired="NO" />
-                  </div>
-                </a>
-              </div>
+                  <div className="ps-banner">
+                  <a  href="javascript:void(0);">
+                    <div className="home-banner-custom-img-contain">
+                      <img
+                        src=
+                        "/static/img/slider/home-1/slide-1.jpg"
+                        alt="martfury"
+                      // height="400px"
+                      // width= "802px"
+                      // style={{height:"400px",width:"802px"}}
+                      ></img>
+                      {/* <DisplayImageWithS3PreSignedUrl imageKey={product.imagePath+product.image} resizeRequired="NO" /> */}
+                    </div>
+                  </a>
+                </div>
             ))}
           </Slider>
         </div>

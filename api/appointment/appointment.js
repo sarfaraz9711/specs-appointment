@@ -24,7 +24,3 @@ export async function getListOfAppointments(data) {
     const result = await APIServices.create('book-appointment/get-all-appointment', data)
     return result.data
 }
-export async function getProductList(){
-const result = await APIServices.get('list/custom-product-list?limit=16&offset=0&productDiscountPercent=&discountOfferId=&priceFrom=0&priceTo=20000&price=DESC&keyword=&count=&categoryslug=eyeglasses&manufacturerId=&sizeValueFilter=&colorsValueFilter=&catIds=&&')
-return result.data
-}

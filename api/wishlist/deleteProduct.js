@@ -21,16 +21,12 @@ export async function delWishApi(productId, setDelStatus) {
 
     if (result) {
         if (result && result.data && result.data.status === 1) {
-            // modalSuccess('success', result.data.message)
+            modalSuccess('success', result.data.message)
             setTimeout(() => {
                 setDelStatus(1)
             }, 1000)
         } else {
-            // modalWarning('error', result.data.message);
+            modalWarning('error', result.data.message);
         }
     }
-}
-
-export async function delWishApiSelect(productId) {
-  await APIServices.delete('customer/wishlist-product-delete', productId)
 }

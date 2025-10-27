@@ -2,13 +2,12 @@ import React, { useState, useEffect } from "react";
 import { appointmentDetails, bookAppointment, getAppointmentByUser, checkAppointment, updateAppointment } from "../../api/appointment/appointment";
 import moment from "moment";
 import { useSelector } from "react-redux";
-import { Modal, Button } from 'react-bootstrap'
+import { Modal } from 'react-bootstrap'
 export default function AppointmentBooking() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({show:false, message:'', class:''});
-  const [showMenu, setShowMenu] = useState(false);
   const [getSlotAvailableMsg, setSlotAvailableMsg] = useState(false);
   const [days, setDays] = useState([]);
   const [bookedSlots, setBookedSlots] = useState({});
@@ -20,7 +19,17 @@ export default function AppointmentBooking() {
   const [getPreviousTimeSlot, setPreviousTimeSlot] = useState(false)
     const userData = useSelector((s) => s.auth.userData);
   const [getUserDetails, setUserDetails]=useState({})
-  
+  const [getAppointmentRegister, setAppointmentRegister]=useState(false)
+  const [getMobileNo, setMobileNo]=useState('')
+  const [sentOtp, setSentOtp]=useState(false)
+  const [getOtp, setOtp]=useState('')
+  const [getInvalidOtp, setInvalidOtp]=useState(false)
+  const [getOtpResendTime, setOtpResendTime]=useState(60)
+  const [getResendTimeActive, setResendTimeActive]=useState(false)
+  const [getAddAddressPopup, setAddAddressPopup]=useState(false)
+  const [getAddressName, setAddressName]=useState('')
+  const [getAddressMobile, setAddressMobile]=useState('')
+  const [getAddAddress, setAddAddress]=useState('')
   useEffect(() => {
     const todayDate = moment(new Date()).format("YYYY-MM-DD");
     getCalenderData(todayDate);
@@ -160,11 +169,74 @@ console.log(result)
     setSlotAvailableMsg(false)
   };
 
+const openMobileEnter = async ()=>{
+  if(!localStorage.getItem('spurtToken')){
+        
+    setAppointmentRegister(true)
+    setSentOtp(false)
+    setInvalidOtp(false)
+    setOtp('')
+    return
+  }else{
+    handleBook()
+  }
+}
+
+const sendOtp = async ()=>{
+setSentOtp(true)
+let a = 60
+const b = 1
+setResendTimeActive(true)
+const x = setInterval(() => {
+  const  c = a-b
+    a=c
+    if (a == 0) {
+        clearInterval(x);
+        setResendTimeActive(false)
+      }
+      setOtpResendTime(a)
+}, 1000);
+}
+
+const VerifyOtp = async ()=>{
+  if(getOtp==111111){
+    setAddAddressPopup(true)
+    setSentOtp(false)
+    setAppointmentRegister(false)
+  }else{
+
+    setInvalidOtp(true)
+  }
+}
+
+const enterOtp = async (value)=>{
+  setOtp(value)
+}
+
+const enterMobile = async(value)=>{
+  if(value.length<=10){
+  setMobileNo(value)
+  }else{
+    return false
+  }
+  
+}
+
+const setDetails = (key, val)=>{
+  console.log(key, val)
+  if(key=='name'){
+    setAddressName(val)
+  }
+  if(key=='mobile'){
+    setAddressMobile(val)
+  }
+  if(key=='address'){
+    setAddAddress(val)
+  }
+  
+}
+
   const handleBook = async () => {
-    if(!localStorage.getItem('spurtToken')){
-        setMessage({show:true, message:'Please login before booking', class:'alert alert-danger'});
-        return
-    }
     if (!selectedDate || !selectedSlot) return;
     setLoading(true);
     setMessage({show:false, message:'', class:''});
@@ -175,7 +247,7 @@ console.log(result)
         appointmentTime: selectedSlot,
         mobile: getUserDetails.mobileNumber,
         fullName:`${getUserDetails.firstName} ${getUserDetails.lastName}`,
-        address: getUserDetails.address,
+        address: `${getAddressName} ${getAddressMobile} ${getAddAddress}`,
         appointmentStatus: "Pending",
         isActive: 1,
         userId: getUserDetails.id,
@@ -189,6 +261,7 @@ console.log(result)
       setSelectedSlot(null);
       setMessage({show:true, message:`✅ Appointment booked for ${displayDate} at ${selectedSlot}`, class:'alert alert-success'});
       getAppointment(getUserDetails)
+      setAddAddressPopup(false)
     } catch (err) {
         
       setMessage({show:true, message:`❌ Failed to book appointment. Try again.`, class:'alert alert-danger'});
@@ -313,7 +386,7 @@ Hi {getUserDetails.firstName}, Your next appointment is on { moment(getNextAppoi
       {!message.show && !getSlotAvailableMsg && selectedDate && selectedSlot && (
         <div className="book-section">
           <button
-            onClick={handleBook}
+            onClick={openMobileEnter}
             disabled={loading}
             className="book-btn"
           >
@@ -350,6 +423,63 @@ Hi {getUserDetails.firstName}, Your next appointment is on { moment(getNextAppoi
             <div className='action-btns'>
                 <button  className='cancel-btn' onClick={()=>setCancelModalOpen(false)}>Close</button>
                 <button className='proceed-btn' onClick={()=>updateAppointmentFun(2)}>Submit</button>
+            </div>
+            </div>
+            </Modal.Body>
+            </Modal>
+
+            <Modal className='order-confirm-box' show={getAppointmentRegister}>
+            <Modal.Header>
+            <h4>Appointment Confirmation</h4>
+            </Modal.Header>
+            <Modal.Body>
+            <div className='order-confirm-body'>
+            <p>
+<label>Mobile No</label>
+<div className="p-relative">
+<div><input disabled={sentOtp} type="number" value={getMobileNo} placeholder="Enter Mobile Number" className="form-control" onChange={(e)=>enterMobile(e.target.value)}/>
+{sentOtp &&<div className="otp-color">OTP Sent on above number</div>}
+</div>
+{sentOtp && <i className="fa fa-edit edit-icon" onClick={()=>setSentOtp(false)}/>}
+</div>
+{sentOtp && <div className="p-relative"><input type="number" value={getOtp} placeholder="Enter OTP" className="form-control mt-3" onChange={(e)=>enterOtp(e.target.value)}/>
+{(sentOtp) && <input className={`resend-otp ${getResendTimeActive?'':'btn btn-primary'}`} disabled={getResendTimeActive} type="button" value={`OTP Resend${getResendTimeActive?`(${getOtpResendTime})`:''}`}/>}</div>
+}
+{getInvalidOtp && <div className="alert alert-danger">OTP is invalid. Please try again!</div>}
+            </p>
+            <div className='action-btns'>
+                <button  className='cancel-btn' onClick={()=>{setAppointmentRegister(false); setMobileNo('')}}>Close</button>
+                {!sentOtp && <button className='proceed-btn' onClick={()=>sendOtp()}>Send OTP</button>}
+                {sentOtp && <button className='proceed-btn' onClick={()=>VerifyOtp()}>Verify OTP</button>}
+            </div>
+            </div>
+            </Modal.Body>
+            </Modal>
+
+            <Modal className='order-confirm-box' show={getAddAddressPopup}>
+            <Modal.Header>
+            <h4>Add Address for appointment</h4>
+            </Modal.Header>
+            <Modal.Body>
+            <div className='order-confirm-body'>
+              <div className="alert alert-success text-center">OTP verified successfully for mobile number {getMobileNo}</div>
+              <div className="row">
+            <div className="col-md-6 mb-3">
+            <label>Name</label>
+            <input className="form-control" type="text" onChange={e=>(setDetails('name',e.target.value))}/>
+            </div>
+            <div className="col-md-6 mb-3">
+            <label>Mobile</label>
+            <input className="form-control" type="number" onChange={e=>(setDetails('mobile',e.target.value))}/>
+            </div>
+            <div className="col-md-12 mb-3">
+            <label>Address</label>
+            <textarea className="form-control" onChange={e=>(setDetails('address',e.target.value))}></textarea>
+            </div>
+            </div>
+            <div className='action-btns'>
+                <button  className='cancel-btn' onClick={()=>setAddAddressPopup(false)}>Close</button>
+                <button className='proceed-btn' onClick={()=>handleBook()}>Submit</button>
             </div>
             </div>
             </Modal.Body>
