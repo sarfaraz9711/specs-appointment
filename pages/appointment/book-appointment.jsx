@@ -521,7 +521,6 @@ export default function AppointmentBooking() {
               <label>Mobile No</label>
               <div className="p-relative">
                 <div>
-                  {/* <input disabled={sentOtp} type="number" value={getMobileNo} placeholder="Enter Mobile Number" className="form-control" onChange={(e)=>enterMobile(e.target.value)}/> */}
                   <input
                     disabled={sentOtp}
                     type="number"
@@ -553,13 +552,6 @@ export default function AppointmentBooking() {
               </div>
               {sentOtp && (
                 <div className="p-relative">
-                  {/* <input
-                    type="number"
-                    value={getOtp}
-                    placeholder="Enter OTP"
-                    className="form-control mt-3"
-                    onChange={(e) => enterOtp(e.target.value)}
-                  /> */}
                   <input
                     type="number"
                     value={getOtp}
@@ -634,14 +626,6 @@ export default function AppointmentBooking() {
                   onChange={(e) => setDetails("name", e.target.value)}
                 />
               </div>
-              {/* <div className="col-md-6 mb-3">
-                <label>Mobile</label>
-                <input
-                  className="form-control"
-                  type="number"
-                  onChange={(e) => setDetails("mobile", e.target.value)}
-                />
-              </div> */}
               <div className="col-md-6 mb-3">
                 <label>Mobile</label>
                 <input
@@ -652,25 +636,6 @@ export default function AppointmentBooking() {
                   readOnly
                 />
               </div>
-              {/* <div className="col-md-12 mb-3">
-                <label>Address</label>
-                <textarea
-                  className="form-control"
-                  onChange={(e) => setDetails("address", e.target.value)}
-                ></textarea>
-              </div>
-            </div>
-            <div className="action-btns">
-              <button
-                className="cancel-btn"
-                onClick={() => setAddAddressPopup(false)}
-              >
-                Close
-              </button>
-              <button className="proceed-btn" onClick={() => handleBook()}>
-                Submit
-              </button>
-            </div> */}
               <div className="col-md-12 mb-3">
                 <label>Address</label>
                 <textarea
