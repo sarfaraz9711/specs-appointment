@@ -82,10 +82,10 @@ function AccountNav({keyValue}){
                     <Menu.Item key="4" icon={<ShoppingCartOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>OrderRoute()}>Order History</Menu.Item>
                     {/* <Menu.Item key="6" icon={<SlidersOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>PreferencesRoute()}>Preferences</Menu.Item>
                     <Menu.Item key="7" icon={<NotificationOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>OfferRoute()}>Notification if Offer</Menu.Item> */}
-                    <Menu.Item key="8" icon={<GiftOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>LoyalityRoute()}>My Loyalty Points</Menu.Item>
-                    <Menu.Item key="10" icon={<GiftOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>creditNote()}>Coupon</Menu.Item>
-                    <Menu.Item key="11" icon={<GiftOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>creditRoute()}>My Credit Notes</Menu.Item>
-                    <Menu.Item key="9" icon={<PoweroffOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>handleLogout()}>Logout</Menu.Item>
+                    {/* <Menu.Item key="8" icon={<GiftOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>LoyalityRoute()}>My Loyalty Points</Menu.Item> */}
+                    {/* <Menu.Item key="10" icon={<GiftOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>creditNote()}>Coupon</Menu.Item> */}
+                    {/* <Menu.Item key="11" icon={<GiftOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>creditRoute()}>My Credit Notes</Menu.Item> */}
+                    {/* <Menu.Item key="9" icon={<PoweroffOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>handleLogout()}>Logout</Menu.Item> */}
                 </Menu>
             </div>
             <input type="checkbox" id="menu-toggle"></input>
@@ -100,10 +100,10 @@ function AccountNav({keyValue}){
                     <Menu.Item key="4" icon={<ShoppingCartOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>OrderRoute()}>Order History</Menu.Item>
                     {/* <Menu.Item key="6" icon={<SlidersOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>PreferencesRoute()}>Preferences</Menu.Item> */}
                     {/* <Menu.Item key="7" icon={<NotificationOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>OfferRoute()}>Notification if Offer</Menu.Item> */}
-                    <Menu.Item key="8" icon={<GiftOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>LoyalityRoute()}>My Loyalty Points</Menu.Item>
-                    <Menu.Item key="10" icon={<GiftOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>creditNote()}>Coupon</Menu.Item>
-                    <Menu.Item key="11" icon={<GiftOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>creditRoute()}>Credit Note</Menu.Item>
-                    <Menu.Item key="9" icon={<PoweroffOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>handleLogout()}>Logout</Menu.Item>
+                    {/* <Menu.Item key="8" icon={<GiftOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>LoyalityRoute()}>My Loyalty Points</Menu.Item> */}
+                    {/* <Menu.Item key="10" icon={<GiftOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>creditNote()}>Coupon</Menu.Item> */}
+                    {/* <Menu.Item key="11" icon={<GiftOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>creditRoute()}>Credit Note</Menu.Item> */}
+                    {/* <Menu.Item key="9" icon={<PoweroffOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>handleLogout()}>Logout</Menu.Item> */}
                 </Menu>
             </nav>
         </div>

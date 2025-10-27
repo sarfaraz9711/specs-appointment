@@ -576,8 +576,8 @@ function InformationDefault({
     dispatch(addItem(1));
     // setAvailValue(0)
     product.price = parseFloat(productsPrice);
-    window.location.href = "/account/checkout";
-    //Router.push("/account/checkout");
+    // window.location.href = "/account/checkout";
+    Router.push("/account/checkout");
   };
 
   const handleIncreaseItemQty = (e, product) => {

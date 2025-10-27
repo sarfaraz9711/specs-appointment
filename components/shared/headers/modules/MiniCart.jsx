@@ -7,7 +7,7 @@ import { useTranslation } from "../../../../i18n";
 import CartPopup from "./CartPopUp";
 import { displayWhenclose } from "../../../../store/colorPalette/action";
 import Link from "next/link";
-
+import Router from "next/router";
 function MiniCart({ currency }) {
   const dispatch = useDispatch();
   const cartItem = useSelector((s) => s.cart);
@@ -60,7 +60,8 @@ function MiniCart({ currency }) {
   const isLoggedIn = useSelector((s) => s.auth.isLoggedIn);
 
 const goToCheckoutPage = () => {
-  window.location = "/account/checkout"
+  // window.location = "/account/checkout"
+  Router.push('/account/checkout')
 }
   return (
     <>

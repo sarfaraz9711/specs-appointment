@@ -36,3 +36,13 @@ export async function AddWishlist(productId,dispatch) {
     }
 
 }
+
+export async function AddWishlistSelect(productId) {
+    const data = JSON.stringify({
+                productId: productId,
+            productOptionValueId: "",
+                
+            })
+      await APIServices.create('customer/add-product-to-wishlist',data)
+
+}

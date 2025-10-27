@@ -38,9 +38,9 @@ h4{font-size:16px; font-weight:600; color:#000;}
 /*-------------------------top bar css-------------------*/
 .topBar{font-weight:500; position:relative;}
 .topBar ul{margin-bottom:0;}
-.topBar ul li{border-left:1px solid #e0e5e7; padding:8px 12px; margin-right:0 !important; height:100%; font-weight:500 !important;}
+.topBar ul li{border:none; padding:8px 12px; margin-right:0 !important; height:100%; font-weight:500 !important;}
 .topBar ul.text-right li{padding:0; position:relative;}
-.topBar ul.text-right .header__extra span{position: absolute; top: 0; min-width: 16px; height: 16px; background: #333; color: #fff; text-align: center; align-items: center;justify-content: center;border-radius: 100%; right: 4px; display: flex;}
+.topBar ul.text-right .header__extra span{position: absolute; top: 0; min-width: 16px; height: 16px; background: #fff; color: #000; text-align: center; align-items: center;justify-content: center;border-radius: 100%; right: 4px; display: flex;}
 .topBar ul li a{padding:8px 12px; display:block;}
 .topBar .helplineSec{font-size:12px; height:100%; width: auto; display: flex; width: 60%; overflow: hidden;}
 .topBar #search-bar{display:none; z-index:5;background: #fff;height:auto; margin: auto; top:0;}
@@ -993,7 +993,7 @@ body{padding-top: 64px;}
 
 .virtual-specs-container {
 	position: relative;
-	padding: 20px;
+	padding: 16px 20px 0 20px;
   }
   
   .cart-icon {
@@ -1024,6 +1024,8 @@ body{padding-top: 64px;}
   .specs-list {
 	margin-right: 20px;
 	text-align: center;
+	height: calc(100vh - 80px);
+    overflow: auto;
   }
   
   .spec-item {
@@ -1033,7 +1035,9 @@ body{padding-top: 64px;}
 	border-radius: 8px;
 	padding: 5px;
 	transition: border 0.2s;
+	width: 220px;
   }
+  .spec-item img{height: 34px}
   
   .spec-item:hover {
 	border-color: #22bb33;
@@ -1046,9 +1050,8 @@ body{padding-top: 64px;}
   .canvas-container {
 	position: relative;
 	width: 640px;
-	height: 480px;
+	height: calc(100vh - 80px);
   }
-  
   .hidden-video {
 	display: none;
   }
@@ -1066,14 +1069,17 @@ body{padding-top: 64px;}
 	bottom: 0;
 	transform: translateX(-50%);
 	padding: 10px 20px;
-	background: #28a745;
+	background: #28a745 !important;
 	color: white;
 	border: none;
 	border-radius: 8px;
 	cursor: pointer;
   }
   
-  .add-to-cart:hover {
-	background: #218838;
+  .de-select {
+	background: #c43d3d !important;
   }
   .spec-item p{margin-bottom: 0;}
+  .fa-shopping-cart{ color: #fff;
+  font-size: 21px;
+}
