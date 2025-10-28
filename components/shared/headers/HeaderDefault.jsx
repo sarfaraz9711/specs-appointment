@@ -20,7 +20,7 @@ import { setResponseData } from "../../../store/responsiveData/action";
 import Head from "next/head";
 import { siteUrl } from "../../../api/url";
 import LanguageSwicherProcess9 from "./modules/LanguageSwicherProcess9";
-import MiniCart from '../headers/modules/MiniCart';
+
 
 function HeaderDefault() {
   const router = useRouter();
@@ -116,12 +116,7 @@ const [getUserDetails, setUserDetails]=useState({})
     dispatch(logOut())
     setUserLogin(false)
     localStorage.removeItem('spurtToken')
-    localStorage.removeItem('spurtUser')
-    
     routeNavigate('/')
-  }
-  const accountSettng = ()=>{
-    routeNavigate('/account/dashboard')
   }
   return (
     <>
@@ -130,9 +125,11 @@ const [getUserDetails, setUserDetails]=useState({})
     <div className="action-button d-flex  ">
       {getUserDetails?.customerType==1?<input onClick={(e)=>routeNavigate('/appointment/view-appointments')} type="button" className="btn btn-primary mr-3" value="View Appointments"/>:<input onClick={(e)=>routeNavigate('/appointment/book-appointment')} type="button" className="btn btn-primary mr-3" value="Book Appointment"/>
 }
-      {!getUserLogin? <><input onClick={(e)=>routeNavigate('/account/login')} type="button" className="btn btn-primary mr-3" value="Login"/>
+      {/* {!getUserLogin? <><input onClick={(e)=>routeNavigate('/account/login')} type="button" className="btn btn-primary mr-3" value="Login"/>
       <input onClick={(e)=>routeNavigate('/account/register')} type="button" className="btn btn-primary" value="Signup"/>
-      </>:<div className="profile-section">
+      </>: */}
+      
+      {getUserLogin && <div className="profile-section">
             <button
               onClick={() => setShowMenu(!getShowMenu)}
               className="profile-btn"
@@ -142,21 +139,13 @@ const [getUserDetails, setUserDetails]=useState({})
             {getShowMenu && (
               <div className="dropdown">
                 <button className="menu-item">📅 My Appointment</button>
-                <button className="menu-item" onClick={()=>{accountSettng()}}>👤 Account Setting</button>
+                <button className="menu-item">👤 My Profile</button>
                 <button className="menu-item" onClick={()=>logOutHandler()}>🚪 Logout</button>
               </div>
             )}
           </div>
   }
-  <div className="topBar">
-    <ul className="list-inline text-right">
-<li className="list-inline-item bdrNone">
-<MiniCart /> 
-
-</li>
-    </ul>
-  </div>
-         
+          
       </div>
     </header>
     {/* <div className="stickyHeader">

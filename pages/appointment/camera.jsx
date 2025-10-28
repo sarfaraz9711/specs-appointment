@@ -1,46 +1,29 @@
-import React, { useEffect, useRef, useState, } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useRef, useState } from "react";
 import { FaceMesh } from "@mediapipe/face_mesh";
 import { Camera } from "@mediapipe/camera_utils";
-import {getProductList} from '../../api/appointment/appointment'
-import DisplayImageWithS3PreSignedUrl from '../../components/elements/AwsS3PreSignedUrl';
-import Router from "next/router";
-import ProductWishList from '../../components/elements/products/productWishList';
-import { getWishListApi, delWishApiSelect, AddWishlistSelect } from "../../api";
+
+const availableSpecs = [
+  { id: 1, name: "Classic Black", src: "/static/img/glasses1.png", price: 1200 },
+  { id: 2, name: "Retro Brown", src: "/static/img/glasses2.png", price: 1500 },
+  { id: 3, name: "Modern Blue", src: "/static/img/glasses3.png", price: 1800 },
+  { id: 4, name: "New Angel", src: "/static/img/angel.png", price: 1000 },
+];
+
 const VirtualSpecsTryOn = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  const [glassesId, setGlassesId] = useState();
+  const [glassesSrc, setGlassesSrc] = useState(availableSpecs[0].src);
   const glassesImgRef = useRef(null);
   const [getSelect, setSelect] = useState([]);
-const [availableSpecs, setAvailableSpecs]=useState([])
-let wishListData = useSelector(s => s.wishlist)
-  useEffect(()=>{
-    getProduct()
-    wishList()
-  },[])
 
-const getProduct = async ()=>{
-
-  const result = await getProductList()
-  setAvailableSpecs(result.data)
-  imageDefault(result.data[0])
-  console.log(result)
-}
-
-const imageDefault = (imageData)=>{
-  setGlassesId(imageData.productId)
-  const img = new Image();
-  console.log(imageData)
-  img.src = `${process.env.NEXT_PUBLIC_S3_BUCKET_CF_URL}/${imageData.image}`;
-  img.onload = () => {
-    glassesImgRef.current = img;
-  };
-}
   // Preload specs image
   useEffect(() => {
-
-  }, [glassesId]);
+    const img = new Image();
+    img.src = glassesSrc;
+    img.onload = () => {
+      glassesImgRef.current = img;
+    };
+  }, [glassesSrc]);
 
   // FaceMesh setup
   useEffect(() => {
@@ -60,32 +43,20 @@ const imageDefault = (imageData)=>{
 
     faceMesh.onResults((results) => {
       const canvas = canvasRef.current;
-      if (!canvas) return;
       const ctx = canvas.getContext("2d");
-      if (!ctx) return;
-    
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-      // ✅ Guard against null
-      if (results.image) {
-        ctx.drawImage(results.image, 0, 0, canvas.width, canvas.height);
-      }
-    
-      if (
-        results.multiFaceLandmarks &&
-        results.multiFaceLandmarks.length > 0 &&
-        glassesImgRef.current
-      ) {
+      ctx.drawImage(results.image, 0, 0, canvas.width, canvas.height);
+
+      if (results.multiFaceLandmarks.length > 0 && glassesImgRef.current) {
         const landmarks = results.multiFaceLandmarks[0];
         drawSpecs(ctx, landmarks, glassesImgRef.current);
       }
     });
-    
+
     const camera = new Camera(videoRef.current, {
       onFrame: async () => {
-        if (videoRef.current) {
-          await faceMesh.send({ image: videoRef.current });
-        }
+        await faceMesh.send({ image: videoRef.current });
       },
       width: 640,
       height: 480,
@@ -96,7 +67,6 @@ const imageDefault = (imageData)=>{
   }, []);
 
   const drawSpecs = (ctx, landmarks, img) => {
-    if (!landmarks || !img) return;
     const leftEye = landmarks[33];
     const rightEye = landmarks[263];
 
@@ -118,29 +88,10 @@ const imageDefault = (imageData)=>{
     );
   };
 
-  const handleSelect = (val) => {
-    if(val){
-      setSelect(prev => prev.filter(item => item.productId !== glassesId));
-      delWishApiSelect(glassesId)
-    }else{
-      AddWishlistSelect(glassesId)
-    const selectedSpec = availableSpecs.find((s) => s.productId === glassesId);
+  const handleSelect = () => {
+    const selectedSpec = availableSpecs.find((s) => s.src === glassesSrc);
     setSelect((prev) => [...prev, selectedSpec]);
-    }
   };
-
-  const wishList = async ()=>{
-    const result = await getWishListApi()
-    console.log(result)
-    setSelect(result.data)
-  }
-
-
-  
-const viewProduct = (productSlug)=>{
-  Router.push(`/product/${productSlug}`)
-}
-
 
   return (
     <div className="virtual-specs-container">
@@ -150,24 +101,19 @@ const viewProduct = (productSlug)=>{
         {cart.length > 0 && <span className="cart-count">{cart.length}</span>}
       </div> */}
 
-      <div className="content-wrapper d-flex justify-content-center">
+      <div className="content-wrapper">
         {/* Left: Specs List */}
         <div className="specs-list">
           <h3>Try Frames</h3>
           {availableSpecs.map((spec) => (
             <div
-              key={spec.productId}
+              key={spec.id}
               className={`spec-item ${
-                glassesId === spec.productId ? "active-spec" : ""
+                glassesSrc === spec.src ? "active-spec" : ""
               }`}
-              onClick={() => imageDefault(spec)}
+              onClick={() => setGlassesSrc(spec.src)}
             >
-               <DisplayImageWithS3PreSignedUrl 
-                imageKey={spec.image} 
-                resizeRequired="YES" 
-                style={{width: '100px'}}
-                alt=""
-                />
+              <img src={spec.src} alt={spec.name} width="100" />
               <p>{spec.name}</p>
               <p>₹{spec.price}</p>
             </div>
@@ -178,31 +124,24 @@ const viewProduct = (productSlug)=>{
         <div className="canvas-container">
           <video ref={videoRef} autoPlay playsInline className="hidden-video" />
           <canvas ref={canvasRef} width={640} height={480} />
-          <button onClick={()=>handleSelect(getSelect.some(item=>item.productId==glassesId))} className={`add-to-cart mb-3 ${getSelect.some(item=>item.productId==glassesId)?'de-select':''}`}>
-            {getSelect.some(item=>item.productId==glassesId)?'Deselect':'Select'}
+          <button onClick={handleSelect} className="add-to-cart">
+            Select
           </button>
-          {/* <ProductWishList productId={glassesId} wishListStatus={wishListFunction()}/> */}
         </div>
-        <div className="specs-list ml-5">
+        <div className="">
         <h3>Selected Frames</h3>
             {getSelect.map(spec=>{
                 return <>
 
 <div
-              key={spec.productId}
-              className={`text-center spec-item`}
+              key={spec.id}
+              className={`spec-item ${
+                glassesSrc === spec.src ? "active-spec" : ""
+              }`}
             >
-              
-              <DisplayImageWithS3PreSignedUrl 
-                imageKey={spec.containerName+spec.image} 
-                resizeRequired="YES" 
-                style={{width: '100px'}}
-                alt=""
-                />
-              <p>{spec.name} (₹{spec.price})</p>
-              <p>
-              <input type="button" className="btn btn-primary ml-3" value="View" onClick={()=>viewProduct(spec.productSlug)}/>
-              </p>
+              <img src={spec.src} alt={spec.name} width="100" />
+              <p>{spec.name}</p>
+              <p>₹{spec.price}</p>
             </div>
 
                 
