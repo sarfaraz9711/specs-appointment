@@ -128,7 +128,7 @@ const [getUserDetails, setUserDetails]=useState({})
         <header className="d-flex justify-content-between specs-hedaer">
     <div className="company-name" onClick={(e)=>routeNavigate('/')}>V-Specs</div>
     <div className="action-button d-flex  ">
-      {getUserDetails?.customerType==2?<input onClick={(e)=>routeNavigate('/appointment/view-appointments')} type="button" className="btn btn-primary mr-3" value="View Appointments"/>:<input onClick={(e)=>routeNavigate('/appointment/book-appointment')} type="button" className="btn btn-primary mr-3" value="Book Appointment"/>
+      {getUserDetails?.customerType==1?<input onClick={(e)=>routeNavigate('/appointment/view-appointments')} type="button" className="btn btn-primary mr-3" value="View Appointments"/>:<input onClick={(e)=>routeNavigate('/appointment/book-appointment')} type="button" className="btn btn-primary mr-3" value="Book Appointment"/>
 }
       {!getUserLogin? <><input onClick={(e)=>routeNavigate('/account/login')} type="button" className="btn btn-primary mr-3" value="Login"/>
       <input onClick={(e)=>routeNavigate('/account/register')} type="button" className="btn btn-primary" value="Signup"/>

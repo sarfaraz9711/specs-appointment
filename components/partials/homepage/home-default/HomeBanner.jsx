@@ -47,7 +47,7 @@ function HomeBanner(data) {
             {data.data.length>0 && data.data.map((product) => (
               
               <div className="ps-banner" key={product.bannerId}>
-                <a onClick={(e) => clickForCounter(product.link, product.bannerId)} href="javascript:void(0);" title={product.title}>
+                <a onClick={(e) => clickForCounter(product.link, product.bannerId)} href="javascript:void(0);">
                   <div className="home-banner-custom-img-contain">
                     {/* <img
                       src={
