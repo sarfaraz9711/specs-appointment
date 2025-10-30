@@ -987,7 +987,7 @@ margin: auto; height: auto; bottom:0; top:0;}
 	.company-name{font-size: 20px;
 		font-weight: bold;
 		color: #fff; cursor: pointer;}
-body{padding-top: 64px;}
+body{padding-top: 20px;}
 .appointment-list{cursor: pointer;}
 .appointment-list:hover{background-color: #b6d0bc;}
 

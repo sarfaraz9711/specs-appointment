@@ -11,7 +11,7 @@ const routeNavigate = (val) => {
 const DefaultLayout = ({ children }) => (
   <div className="layout--default">
     <Head />
-    {/* <HeaderDefault /> */}
+    <HeaderDefault />
     {children}
     <div id="loader-wrapper">
       <div className="loader-section section-left"></div>
