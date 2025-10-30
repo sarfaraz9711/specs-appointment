@@ -1,18 +1,19 @@
 import React, { useRef } from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { SocialIcon } from "react-social-icons";
-import { Container, Segment } from 'semantic-ui-react';
-import {facebookGtm} from '../../../../../api/data/facebook'
+import { Container, Segment } from "semantic-ui-react";
+import { facebookGtm } from "../../../../../api/data/facebook";
 import {
-  FacebookIcon, FacebookShareButton,
+  FacebookIcon,
+  FacebookShareButton,
   WhatsappShareButton,
   WhatsappIcon,
   EmailIcon,
   EmailShareButton,
   TwitterIcon,
   TwitterShareButton,
-} from 'react-share';
-import ThumbnailDefault from '../../modules/thumbnail/ThumbnailDefault';
+} from "react-share";
+import ThumbnailDefault from "../../modules/thumbnail/ThumbnailDefault";
 
 import {
   addItem,
@@ -20,7 +21,10 @@ import {
   decreaseItemQty,
 } from "../../../../../store/cart/action";
 import { useState } from "react";
-import { addToCartApi, getParentCategory } from "../../../../../api/cart/addToCart";
+import {
+  addToCartApi,
+  getParentCategory,
+} from "../../../../../api/cart/addToCart";
 import { cartAdd } from "../../../../helper/cartHelper";
 import { pinCodeApi } from "../../../../../api/product/pincodeAvail";
 import { priceHelpFunc } from "../../../../helper/priceHelper";
@@ -42,10 +46,15 @@ import {
 import SpurtQuotationPop from "../../../../partials/Quotation/QuoteModal";
 import ProductReviewRatingviews from "../description/ProductReviewRating";
 import SpurtVarientComponent from "../../../../partials/product/VarientComponent";
-import { CheckCircleOutlined, CheckOutlined, EnvironmentOutlined, HomeOutlined } from "@ant-design/icons";
+import {
+  CheckCircleOutlined,
+  CheckOutlined,
+  EnvironmentOutlined,
+  HomeOutlined,
+} from "@ant-design/icons";
 import { Button, Image, Popover, Radio } from "antd";
 import { siteUrl } from "../../../../../api/url";
-import * as ga from '../../../../../utilities/common-helpers';
+import * as ga from "../../../../../utilities/common-helpers";
 
 function InformationDefault({
   showModal,
@@ -64,10 +73,9 @@ function InformationDefault({
   //  let product=useSelector((s) => s.setting).currency;
   const varproduct = useSelector((s) => s.product.singleProduct);
 
-
   const availableProductStatus = useSelector((s) => s.product.hidefunavailable);
   const quantity = useSelector((s) => s.product.qut);
-  const getCartVarient = useSelector((v)=>v.cart.varientItem)
+  const getCartVarient = useSelector((v) => v.cart.varientItem);
 
   const [colorTheme, setColorTheme] = useState();
   const dispatch = useDispatch();
@@ -96,9 +104,9 @@ function InformationDefault({
   // product.skuName=skuNumber
   const [varName, setVarName] = useState("");
   const [imagedataload, setalldataload] = useState([]);
-  const [ productExistsInCart, setProductExistsInCart] = useState([]);
+  const [productExistsInCart, setProductExistsInCart] = useState([]);
   const [varId, setVarId] = useState("");
-  const[addedInCart, SetAddedInCart] = useState(false);
+  const [addedInCart, SetAddedInCart] = useState(false);
 
   let currentColor = useSelector((s) => s.palette.currentColor);
   let authCheck = useSelector((s) => s.auth);
@@ -108,7 +116,6 @@ function InformationDefault({
   product.initialPrice = productsPrice;
   const varientdefultid = useSelector((s) => s.product.sliderdataimage);
   const [urls] = useState(`${siteUrl}/product/${product.productSlug}`);
-
 
   // product.skuName=skuNumber
   let optionArray = [];
@@ -123,12 +130,10 @@ function InformationDefault({
     });
 
   useEffect(() => {
-
-    console.log("shareurl", urls)
+    console.log("shareurl", urls);
     dispatch(getQuantymin(1));
     varproduct.processImage = product.productImage;
     if (product.minQuantityAllowedCart !== null && product.hasStock !== 0) {
-      
       if (
         varproduct.productvarientList &&
         varproduct.productvarientList.length !== 0
@@ -146,7 +151,7 @@ function InformationDefault({
         // setQuantity(product.minQuantityAllowedCart);
       }
     }
-    localStorage.removeItem("signUpPopupProductPage")
+    localStorage.removeItem("signUpPopupProductPage");
   }, [varproduct]);
 
   useEffect(() => {
@@ -168,11 +173,9 @@ function InformationDefault({
       varproduct.productvarientList &&
       varproduct.productvarientList.length !== 0
     ) {
-      
       setSkuNumber(varproduct.skuName);
       // product.skuName=varproduct.skuName
     } else {
-      
       setSkuNumber(product.skuName);
     }
   }, [varproduct.skuName]);
@@ -197,10 +200,10 @@ function InformationDefault({
   useEffect(() => {
     setalldataload(product.productImage);
     const cartItems = JSON.parse(localStorage.getItem("cartItem"));
-    if(cartItems){
-    const variantName = varproduct.variantName;
-    setProductExistsInCart(cartItems);
-  }
+    if (cartItems) {
+      const variantName = varproduct.variantName;
+      setProductExistsInCart(cartItems);
+    }
   }, [buttonLoader, reloadCart]);
 
   const quantityTier = () => {
@@ -385,43 +388,41 @@ function InformationDefault({
     toast({ type: type, message: "You have reached maximum quantity limit" });
   };
 
- const sendAddtoCartStatsToGA4 = (product) => {
-  let fbData = [{
-    "currency": "INR",
-    "content_ids": product.skuName,
-    "content_name": product.name,
-    "price": product.productSellingPrice
- }]
-  facebookGtm(fbData, 'AddToCart')
-  ga.pushToDataLayer({
-    event: "add_to_cart",
-    ecommerce : {
-      currency: "INR",
-      value: product.productSellingPrice,
-      items: [
-        {
-          item_id: product.skuName,
-          item_name: product.name,
-          index: 0,
-          price: product.productSellingPrice,
-          quantity: 1
-        }
-      ]
-    }
-  })
-
-
-  
- }
+  const sendAddtoCartStatsToGA4 = (product) => {
+    let fbData = [
+      {
+        currency: "INR",
+        content_ids: product.skuName,
+        content_name: product.name,
+        price: product.productSellingPrice,
+      },
+    ];
+    facebookGtm(fbData, "AddToCart");
+    ga.pushToDataLayer({
+      event: "add_to_cart",
+      ecommerce: {
+        currency: "INR",
+        value: product.productSellingPrice,
+        items: [
+          {
+            item_id: product.skuName,
+            item_name: product.name,
+            index: 0,
+            price: product.productSellingPrice,
+            quantity: 1,
+          },
+        ],
+      },
+    });
+  };
 
   const handleAddItemToCart = async (e, id, price, product) => {
-    
     sendAddtoCartStatsToGA4(product);
-    const category = product?.Category[0]
-    const parentCategory = await getParentCategory(category.categoryId)
-    let parentCategoryName= category.categoryName
-    if(parentCategory.category_id!=null){
-      parentCategoryName=parentCategory.name
+    const category = product?.Category[0];
+    const parentCategory = await getParentCategory(category.categoryId);
+    let parentCategoryName = category.categoryName;
+    if (parentCategory.category_id != null) {
+      parentCategoryName = parentCategory.name;
     }
     e.preventDefault();
     setButtonLoader(true);
@@ -433,7 +434,6 @@ function InformationDefault({
     }
     if (authCheck.isLoggedIn) {
       if (product.flag === "") {
-        
         addToCartApi(
           id,
           priceHelpFunc(
@@ -453,7 +453,6 @@ function InformationDefault({
           parentCategoryName
         );
       } else {
-        
         let upPrice = parseFloat(price) + parseFloat(availValue);
         addToCartApi(
           id,
@@ -493,21 +492,21 @@ function InformationDefault({
     // console.log(optionName, "availValueavailValue");
     // console.log(res,'availValueavailValue')
     // console.log(product, quantity, availValue, "availValueavailValue");
-    cartAdd(product, quantity, availValue, parentCategoryName)
-    SetAddedInCart(true)
+    cartAdd(product, quantity, availValue, parentCategoryName);
+    SetAddedInCart(true);
     dispatch(addItem(1));
-    
-   // setShowMiniCart(true);
+
+    // setShowMiniCart(true);
   };
 
   const handleBuyAddItemToCart = async (e, id, price, product) => {
-    console.log(product, "Nero added in buy ow")
+    console.log(product, "Nero added in buy ow");
     sendAddtoCartStatsToGA4(product);
-    const category = product?.Category[0]
-    const parentCategory = await getParentCategory(category.categoryId)
-    let parentCategoryName= category.categoryName
-    if(parentCategory.category_id!=null){
-      parentCategoryName=parentCategory.name
+    const category = product?.Category[0];
+    const parentCategory = await getParentCategory(category.categoryId);
+    let parentCategoryName = category.categoryName;
+    if (parentCategory.category_id != null) {
+      parentCategoryName = parentCategory.name;
     }
     e.preventDefault();
     setButtonLoader(true);
@@ -519,7 +518,12 @@ function InformationDefault({
       if (product.flag === "") {
         addToCartApi(
           id,
-          priceHelpFunc(product.price, product.taxType, product.taxValue, availValue),
+          priceHelpFunc(
+            product.price,
+            product.taxType,
+            product.taxValue,
+            availValue
+          ),
           quantity,
           optionName,
           productOptionValueId,
@@ -585,8 +589,13 @@ function InformationDefault({
       varproduct.productvarientList &&
       varproduct.productvarientList.length !== 0
     ) {
-      const filterSku = varproduct.productvarientList.filter(item=>item.skuName==skuNumber)
-      product.maxQuantityAllowedCart = filterSku[0].quantity>varproduct.maxQuantityAllowedCart?varproduct.maxQuantityAllowedCart:filterSku[0].quantity;
+      const filterSku = varproduct.productvarientList.filter(
+        (item) => item.skuName == skuNumber
+      );
+      product.maxQuantityAllowedCart =
+        filterSku[0].quantity > varproduct.maxQuantityAllowedCart
+          ? varproduct.maxQuantityAllowedCart
+          : filterSku[0].quantity;
     }
     if (product.hasStock === 1) {
       if (product.hasTirePrice === 1) {
@@ -660,10 +669,15 @@ function InformationDefault({
         }
       } else {
         if (product.maxQuantityAllowedCart !== null) {
-            console.log(varproduct.productvarientList);
-            console.log("quantityquantityquantityquantity",quantity);
-          const checkVarient = varproduct.productvarientList.filter(item=>item.id==product.variantId)
-            if ((checkVarient[0].maxQuantityAllowedCart>=(quantity + 1)) && (checkVarient[0].quantity>=(quantity + 1))) {
+          console.log(varproduct.productvarientList);
+          console.log("quantityquantityquantityquantity", quantity);
+          const checkVarient = varproduct.productvarientList.filter(
+            (item) => item.id == product.variantId
+          );
+          if (
+            checkVarient[0].maxQuantityAllowedCart >= quantity + 1 &&
+            checkVarient[0].quantity >= quantity + 1
+          ) {
             dispatch(increaseItemQty(product));
             dispatch(addItem(1));
             // setQuantity(quantity + 1);
@@ -770,81 +784,76 @@ function InformationDefault({
     window.scrollTo({ top: y, behavior: "smooth" });
   };
 
-  const text =
-    <div className="info-heading" >
-      <span className="heading"><b>REDCHIEF STORES NEAR YOU</b></span>
+  const text = (
+    <div className="info-heading">
+      <span className="heading">
+        <b>REDCHIEF STORES NEAR YOU</b>
+      </span>
     </div>
+  );
 
   const content = () => {
-
-    const body = useSelector(state => state.auth.storeData);
-
-    
+    const body = useSelector((state) => state.auth.storeData);
 
     const [value, setValue] = useState("1");
 
     const onchange = (e) => {
-      setValue(e.target.value)
-      
-    }   
+      setValue(e.target.value);
+    };
     return (
       <div className="main-dev">
         <div className="middle-dev">
           <div className="bottom-dev">
-
             <table className="table" style={{ border: "none" }}>
-
               <tbody>
+                {body &&
+                  body?.map((b) => (
+                    <Radio value="1" onChange={onchange}>
+                      <>
+                        <h4 className="box-heading">{b.shopName}</h4>
+                        <tr>
+                          <td> {b.address} </td>
+                          <td>:</td>
+                          <td>
+                            <strong className="available">Available</strong>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Order Online & pickup</td>
+                          <td>:</td>
+                          <td>
+                            <strong>Ready to pickup in 2 hours</strong>
+                          </td>
+                        </tr>
+                        <ul className="ul-heading">
+                          <li>
+                            <strong>
+                              Time :{" "}
+                              <span>
+                                {b.storeOpeningTime} - {b.storeClosingTime}
+                              </span>{" "}
+                            </strong>
+                          </li>
+                          <li>
+                            <strong>
+                              Phone : <span>{b.contactNo}</span>{" "}
+                            </strong>
+                          </li>
+                        </ul>
 
-                {body && body?.map(b =>
-                <Radio value="1" onChange={onchange}>
-                  <>
-                    <h4 className="box-heading">{b.shopName}</h4>
-                    <tr>
-                      <td> {b.address} </td>
-                      <td>:</td>
-                      <td>
-                        <strong className="available">Available</strong>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Order Online & pickup</td>
-                      <td>:</td>
-                      <td>
-                        <strong>Ready to pickup in 2 hours</strong>
-                      </td>
-                    </tr>
-                    <ul className="ul-heading">
-                      <li>
-                        <strong>Time : <span>{b.storeOpeningTime} - {b.storeClosingTime}</span> </strong>
-                      </li>
-                      <li>
-                        <strong>Phone :  <span>{b.contactNo}</span> </strong>
-
-
-                      </li>
-                    </ul>
-                   
-                    {/* <a className="direction-heading" href="https://maps.google.com/?q=12.81839,77.690889">
+                        {/* <a className="direction-heading" href="https://maps.google.com/?q=12.81839,77.690889">
               <Image src="https://3.imimg.com/data3/SH/UO/MY-2521105/directional-sign-500x500.jpg" width={35} className="img-tag" />
               Direction</a> */}
-                  </>
-                  </Radio>
-                )}
-
+                      </>
+                    </Radio>
+                  ))}
               </tbody>
-
             </table>
-
           </div>
         </div>
-
       </div>
-    )
-
-  }
-
-
+    );
+  };
 
   return (
     <div className="product-sticky-detail">
@@ -861,15 +870,17 @@ function InformationDefault({
         setShowMiniCart={setShowMiniCart}
         cartData={cartData}
       />
-      {console.log("productproduct",product)}
+      {console.log("productproduct", product)}
       <div className="ps-product__header mobile-active">
-      <ThumbnailDefault product={product} setvarientdefultid={product.variantId} varientdefultid={product.variantId} />
+        <ThumbnailDefault
+          product={product}
+          setvarientdefultid={product.variantId}
+          varientdefultid={product.variantId}
+        />
       </div>
-      {(availableProductStatus === false || true) ? (
+      {availableProductStatus === false || true ? (
         <>
-          <p>
-            Article No: {product.upc}
-          </p>
+          <p>Article No: {product.upc}</p>
         </>
       ) : (
         <>
@@ -879,10 +890,9 @@ function InformationDefault({
 
       <h1 className="desktop-active">{product.name}</h1>
 
-
       <div className="product-quant-price-container d-block">
         <div className="product-quant-price-subcontainer">
-          {product.isActive==1 && availableProductStatus === false ? (
+          {product.isActive == 1 && availableProductStatus === false ? (
             <p className="is-available">
               <img
                 src="/static/img/tick-green.svg"
@@ -896,14 +906,13 @@ function InformationDefault({
           <div className="product-quant-price-maincontainer mb-0">
             <div className="custom-product-price mr-80">
               {varproduct.productvarientList &&
-                varproduct.productvarientList.length !== 0 ? (
+              varproduct.productvarientList.length !== 0 ? (
                 <>
-                  {(availableProductStatus === false || true) ? (
+                  {availableProductStatus === false || true ? (
                     <>
                       {/* {console.log(Object.keys(varproduct.selectedVariant).length,'2323varproduct')} */}
                       {varproduct.productvarientList.map((produt) => (
                         <>
-                          
                           {varproduct.variantName == produt.varientName ? (
                             <>
                               <h3>
@@ -935,21 +944,21 @@ function InformationDefault({
                                             <>
                                               {produt.pricerefer !== ""
                                                 ? formatCurrency(
-                                                  priceHelpFunc(
-                                                    produt.pricerefer,
-                                                    product.taxType,
-                                                    product.taxValue,
-                                                    availValue
+                                                    priceHelpFunc(
+                                                      produt.pricerefer,
+                                                      product.taxType,
+                                                      product.taxValue,
+                                                      availValue
+                                                    )
                                                   )
-                                                )
                                                 : formatCurrency(
-                                                  priceHelpFunc(
-                                                    produt.price,
-                                                    product.taxType,
-                                                    product.taxValue,
-                                                    availValue
-                                                  )
-                                                )}
+                                                    priceHelpFunc(
+                                                      produt.price,
+                                                      product.taxType,
+                                                      product.taxValue,
+                                                      availValue
+                                                    )
+                                                  )}
                                             </>
                                           ) : (
                                             <>
@@ -976,21 +985,21 @@ function InformationDefault({
                                       <>
                                         {produt.pricerefer !== ""
                                           ? formatCurrency(
-                                            priceHelpFunc(
-                                              produt.pricerefer,
-                                              product.taxType,
-                                              product.taxValue,
-                                              availValue
+                                              priceHelpFunc(
+                                                produt.pricerefer,
+                                                product.taxType,
+                                                product.taxValue,
+                                                availValue
+                                              )
                                             )
-                                          )
                                           : formatCurrency(
-                                            priceHelpFunc(
-                                              produt.price,
-                                              product.taxType,
-                                              product.taxValue,
-                                              availValue
-                                            )
-                                          )}
+                                              priceHelpFunc(
+                                                produt.price,
+                                                product.taxType,
+                                                product.taxValue,
+                                                availValue
+                                              )
+                                            )}
                                       </>
                                     ) : (
                                       <>
@@ -1007,7 +1016,7 @@ function InformationDefault({
                                   </>
                                 )}
                               </h3>
-                
+
                               {produt.pricerefer && (
                                 <>
                                   {produt.pricerefer !== "" && (
@@ -1032,7 +1041,7 @@ function InformationDefault({
                                         Math.round(
                                           ((produt.price - produt.pricerefer) *
                                             100) /
-                                          produt.price
+                                            produt.price
                                         )
                                       )}
                                       % off
@@ -1048,7 +1057,6 @@ function InformationDefault({
                           )}
                         </>
                       ))}
-                                    
                     </>
                   ) : (
                     // sfsdfsdfsdfsdfsd
@@ -1057,7 +1065,6 @@ function InformationDefault({
                 </>
               ) : (
                 <>
-                  
                   {product.hasTirePrice === 1 ? (
                     <>
                       {opentlet.quantity <= quantity ? (
@@ -1078,21 +1085,21 @@ function InformationDefault({
                             {currency ? currency.symbol + " " : "₹ "}
                             {product.pricerefer
                               ? formatCurrency(
-                                priceHelpFunc(
-                                  product.pricerefer,
-                                  product.taxType,
-                                  product.taxValue,
-                                  availValue
+                                  priceHelpFunc(
+                                    product.pricerefer,
+                                    product.taxType,
+                                    product.taxValue,
+                                    availValue
+                                  )
                                 )
-                              )
                               : formatCurrency(
-                                priceHelpFunc(
-                                  product.price,
-                                  product.taxType,
-                                  product.taxValue,
-                                  availValue
-                                )
-                              )}
+                                  priceHelpFunc(
+                                    product.price,
+                                    product.taxType,
+                                    product.taxValue,
+                                    availValue
+                                  )
+                                )}
                           </h3>
                         </>
                       )}
@@ -1101,26 +1108,26 @@ function InformationDefault({
                     <>
                       <h3>
                         {currency ? currency.symbol + " " : "₹ "}
-                      
-                        {product.pricerefer!==""
+
+                        {product.pricerefer !== ""
                           ? formatCurrency(
-                            priceHelpFunc(
-                              product.pricerefer,
-                              product.taxType,
-                              product.taxValue,
-                              availValue
+                              priceHelpFunc(
+                                product.pricerefer,
+                                product.taxType,
+                                product.taxValue,
+                                availValue
+                              )
                             )
-                          )
                           : formatCurrency(
-                            priceHelpFunc(
-                              product.initialPrice,
-                              product.taxType,
-                              product.taxValue,
-                              availValue
-                            )
-                          )}
+                              priceHelpFunc(
+                                product.initialPrice,
+                                product.taxType,
+                                product.taxValue,
+                                availValue
+                              )
+                            )}
                       </h3>
-                      {product.initialPrice && product.pricerefer!=="" && (
+                      {product.initialPrice && product.pricerefer !== "" && (
                         <span className="mb-0">
                           {currency ? currency.symbol + " " : "₹ "}{" "}
                           {priceHelpFunc(
@@ -1131,13 +1138,14 @@ function InformationDefault({
                           )}
                         </span>
                       )}
-                      
-                      {product.flag !== ""  && (
+
+                      {product.flag !== "" && (
                         <p className="mb-0">
                           {Math.abs(
                             Math.round(
-                              ((product.initialPrice - product.pricerefer) * 100) /
-                              product.initialPrice
+                              ((product.initialPrice - product.pricerefer) *
+                                100) /
+                                product.initialPrice
                             )
                           )}
                           % off
@@ -1148,7 +1156,7 @@ function InformationDefault({
                 </>
               )}
             </div>
-            {(availableProductStatus === false || true) ? (
+            {availableProductStatus === false || true ? (
               <>
                 <div className="custom-product-quant mb-0 justify-content-center">
                   <span className="mr-0">{t("account.Quantity")}:</span>
@@ -1156,7 +1164,6 @@ function InformationDefault({
                     <button onClick={(e) => handleDecreaseItemQty(e, product)}>
                       -
                     </button>
-                    
 
                     <span>{quantity}</span>
                     <button onClick={(e) => handleIncreaseItemQty(e, product)}>
@@ -1169,16 +1176,16 @@ function InformationDefault({
               ""
             )}
           </div>
-          <p className="pr-mrp-text">MRP:(Inclusive of all taxes)
-                                <br/>
-                                Country Origin - INDIA
-                                </p>
+          <p className="pr-mrp-text">
+            MRP:(Inclusive of all taxes)
+            <br />
+            Country Origin - INDIA
+          </p>
         </div>
       </div>
       {availableProductStatus === false ? (
         <>
           <ProductReviewRatingviews product={product} starcout={starcoutid} />
-
         </>
       ) : (
         ""
@@ -1209,12 +1216,12 @@ function InformationDefault({
                           <tr key={index}>
                             <td style={{ width: "100px" }}>{price.quantity}</td>
                             <td> */}
-                              {/* ( */}
-                              {/* per unit ={" "} */}
-                              {/* {currency ? currency.symbol + " " : "₹ "}
+      {/* ( */}
+      {/* per unit ={" "} */}
+      {/* {currency ? currency.symbol + " " : "₹ "}
                               {price.price} */}
-                              {/* ) */}
-                            {/* </td>
+      {/* ) */}
+      {/* </td>
                             <td>
                               {currency ? currency.symbol + " " : "₹ "}
                               {price.quantity * price.price}
@@ -1231,8 +1238,6 @@ function InformationDefault({
       ) : (
         ""
       )} */}
-
-
 
       {product.pincodeBasedDelivery === 1 && (
         <div className="custom-shipping-input-container">
@@ -1260,9 +1265,8 @@ function InformationDefault({
       )}
       <>
         <SpurtVarientComponent />
-
       </>
-      {product.isActive==1 && availableProductStatus === false ? (
+      {product.isActive == 1 && availableProductStatus === false ? (
         <>
           {product.pincodeBasedDelivery === 1 && checkStatus === "success" && (
             <div className="">
@@ -1281,7 +1285,7 @@ function InformationDefault({
                         product
                       )
                     }
-                  // disabled={buttonLoader === true ? "disabled" : ""}
+                    // disabled={buttonLoader === true ? "disabled" : ""}
                   >
                     <img src="/static/img/cart-icon.svg" />
                     {t("products.AddToCart")}
@@ -1337,21 +1341,46 @@ function InformationDefault({
                 <h2>{t("products.OutofStock")}</h2>
               )}
 
-          {(productExistsInCart.length>0 && ((productExistsInCart.filter((item) => item.variantId==product.variantId))).length>0)   && (
-                <button
-                  // className="custom-product-addToCart"
-                  className={`custom-product-addToCart ${currentColor}`}
-                  onClick={(e) =>{
-                    window.location = "/account/checkout";
-                    //Router.push("/account/shopping-cart");
-                  }}
-                // disabled={buttonLoader === true ? "disabled" : ""}
-                >
-                  <img src="/static/img/cart-icon.svg" />
-                  {t("products.GoToCart")}
-                </button>
-              )}
-{/* 
+              {productExistsInCart.length > 0 &&
+                productExistsInCart.filter(
+                  (item) => item.variantId == product.variantId
+                ).length > 0 && (
+                  // <button
+                  //   // className="custom-product-addToCart"
+                  //   className={`custom-product-addToCart ${currentColor}`}
+                  //   onClick={(e) => {
+                  //     window.location = "/account/checkout";
+                  //     //Router.push("/account/shopping-cart");
+                  //   }}
+                  //   // disabled={buttonLoader === true ? "disabled" : ""}
+                  // >
+                  //   <img src="/static/img/cart-icon.svg" />
+                  //   {t("products.GoToCart")}
+                  // </button>
+                  <>
+                    <button
+                      className={`custom-product-addToCart ${currentColor}`}
+                      onClick={(e) => {
+                        window.location = "/account/checkout";
+                      }}
+                    >
+                      <img src="/static/img/cart-icon.svg" />
+                      {t("products.GoToCart")}
+                    </button>
+
+                    <button
+                      className={`custom-product-addToCart ${currentColor}`}
+                      onClick={(e) => {
+                        window.location = "/appointment/camera";
+                      }}
+                    >
+                      <img src="/static/img/camera-icon.svg" alt="Try Frame" />
+                      TRY FRAME
+                      {/* {t("products.TryFrame")} */}
+                    </button>
+                  </>
+                )}
+              {/* 
         {addedInCart && productExistsInCart && productExistsInCart.length < 1 && (
                 <button
                   // className="custom-product-addToCart"
@@ -1366,44 +1395,46 @@ function InformationDefault({
                   {t("products.GoToCart")}
                 </button>
               )} */}
-{console.log(product.variantId)}
-{console.log("getCartVarient.skuName",getCartVarient.skuName)}
-{console.log(productExistsInCart)}
+              {console.log(product.variantId)}
+              {console.log("getCartVarient.skuName", getCartVarient.skuName)}
+              {console.log(productExistsInCart)}
 
-
-
-              {(productExistsInCart.length==0 || ((productExistsInCart.filter((item) => item.variantId==product.variantId))).length==0) && (
-               <> <button
-                  // className="custom-product-addToCart"
-                  className={`custom-product-addToCart ${currentColor}`}
-                  onClick={(e) =>
-                    handleAddItemToCart(
-                      e,
-                      product.productId,
-                      product.price,
-                      product
-                    )
-                  }
-                // disabled={buttonLoader === true ? "disabled" : ""}
-                >
-                  <img src="/static/img/cart-icon.svg" />
-                  {t("products.AddToCart")}
-                </button>
-              
-                <button
-                  className="custom-product-buynow"
-                  onClick={(e) =>
-                    handleBuyAddItemToCart(
-                      e,
-                      product.productId,
-                      product.price,
-                      product
-                    )
-                  }
-                >
-                  <img src="/static/img/power.svg" />
-                  {t("products.BuyNow")}
-                </button>
+              {(productExistsInCart.length == 0 ||
+                productExistsInCart.filter(
+                  (item) => item.variantId == product.variantId
+                ).length == 0) && (
+                <>
+                  {" "}
+                  <button
+                    // className="custom-product-addToCart"
+                    className={`custom-product-addToCart ${currentColor}`}
+                    onClick={(e) =>
+                      handleAddItemToCart(
+                        e,
+                        product.productId,
+                        product.price,
+                        product
+                      )
+                    }
+                    // disabled={buttonLoader === true ? "disabled" : ""}
+                  >
+                    <img src="/static/img/cart-icon.svg" />
+                    {t("products.AddToCart")}
+                  </button>
+                  <button
+                    className="custom-product-buynow"
+                    onClick={(e) =>
+                      handleBuyAddItemToCart(
+                        e,
+                        product.productId,
+                        product.price,
+                        product
+                      )
+                    }
+                  >
+                    <img src="/static/img/power.svg" />
+                    {t("products.BuyNow")}
+                  </button>
                 </>
               )}
 
@@ -1458,45 +1489,37 @@ function InformationDefault({
             </div>
           </div> */}
           <SpurtQuotationPop product={product} />
-          <div style={{ display: 'flex' }} className="product-share">
+          <div style={{ display: "flex" }} className="product-share">
             {/* <div style={{marginTop:'4px' , fontSize:'12px' ,padding:'2px'}}>SHARE THIS </div> */}
-           <span className="mr-2 social-share"><i class="fa fa-share"/>Share</span> 
+            <span className="mr-2 social-share">
+              <i class="fa fa-share" />
+              Share
+            </span>
             <Segment style={{ margin: "2px" }}>
-              <FacebookShareButton title="facebook"
-                appId='581792929406650'
-                url={urls}>
-
+              <FacebookShareButton
+                title="facebook"
+                appId="581792929406650"
+                url={urls}
+              >
                 <FacebookIcon size={20} round={true} />
-
               </FacebookShareButton>
             </Segment>
             <Segment title="Whatsapp" style={{ margin: "2px" }}>
-              <WhatsappShareButton
-              url={urls}
-              >
-
-                <WhatsappIcon size={20} round={true}  />
-
+              <WhatsappShareButton url={urls}>
+                <WhatsappIcon size={20} round={true} />
               </WhatsappShareButton>
             </Segment>
-            <Segment style={{ margin: "2px" }}>
-            </Segment>
+            <Segment style={{ margin: "2px" }}></Segment>
             <Segment title="Twiter" style={{ margin: "2px" }}>
-              <TwitterShareButton url={urls}
-              >
-
+              <TwitterShareButton url={urls}>
                 <TwitterIcon size={20} round={true} />
-
               </TwitterShareButton>
             </Segment>
             {/* <Segment>
               <SocialIcon target="_blank" title="Instagram" style={{ height: 18, width: 18, margin: "4px" }} url="https://instagram.com" />
 
             </Segment> */}
-
           </div>
-
-
         </>
       ) : (
         " "

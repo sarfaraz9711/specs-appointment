@@ -3,7 +3,12 @@ import { FaceMesh } from "@mediapipe/face_mesh";
 import { Camera } from "@mediapipe/camera_utils";
 
 const availableSpecs = [
-  { id: 1, name: "Classic Black", src: "/static/img/glasses1.png", price: 1200 },
+  {
+    id: 1,
+    name: "Classic Black",
+    src: "/static/img/glasses1.png",
+    price: 1200,
+  },
   { id: 2, name: "Retro Brown", src: "/static/img/glasses2.png", price: 1500 },
   { id: 3, name: "Modern Blue", src: "/static/img/glasses3.png", price: 1800 },
   { id: 4, name: "New Angel", src: "/static/img/angel.png", price: 1000 },
@@ -129,24 +134,23 @@ const VirtualSpecsTryOn = () => {
           </button>
         </div>
         <div className="">
-        <h3>Selected Frames</h3>
-            {getSelect.map(spec=>{
-                return <>
-
-<div
-              key={spec.id}
-              className={`spec-item ${
-                glassesSrc === spec.src ? "active-spec" : ""
-              }`}
-            >
-              <img src={spec.src} alt={spec.name} width="100" />
-              <p>{spec.name}</p>
-              <p>₹{spec.price}</p>
-            </div>
-
-                
-                </>
-            })}
+          <h3>Selected Frames</h3>
+          {getSelect.map((spec) => {
+            return (
+              <>
+                <div
+                  key={spec.id}
+                  className={`spec-item ${
+                    glassesSrc === spec.src ? "active-spec" : ""
+                  }`}
+                >
+                  <img src={spec.src} alt={spec.name} width="100" />
+                  <p>{spec.name}</p>
+                  <p>₹{spec.price}</p>
+                </div>
+              </>
+            );
+          })}
         </div>
       </div>
     </div>

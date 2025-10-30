@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import {facebookGtm} from '../../api/data/facebook'
+import { facebookGtm } from "../../api/data/facebook";
 import { useDispatch, useSelector } from "react-redux";
 import Router, { useRouter } from "next/router";
 import ProductDetailFullwidth from "../../components/elements/detail/ProductDetailFullwidth";
@@ -17,7 +17,6 @@ import { getProductDetApi } from "../../api";
 import { productRatingApi } from "../../api";
 import { useState } from "react";
 
-
 // import { questionsApi } from '../../api/product/question';
 import ThemeChanger from "../../components/elements/color/themeControl";
 import useNetwork from "../../components/reusable/NetworkCheck";
@@ -27,8 +26,8 @@ import HeaderDefault from "../../components/shared/headers/HeaderDefault";
 import Link from "next/link";
 import { apiUrl } from "../../api/url";
 import { useTranslation } from "../../i18n";
-import SpurtRelatedProduct from '../../components/partials/RelatedProduct/RelatedProduct'
-import * as ga from '../../utilities/common-helpers';
+import SpurtRelatedProduct from "../../components/partials/RelatedProduct/RelatedProduct";
+import * as ga from "../../utilities/common-helpers";
 
 const ProductDefaultPage = ({ query }) => {
   const [ratingInfo, setRatingInfo] = useState();
@@ -42,7 +41,7 @@ const ProductDefaultPage = ({ query }) => {
   const [varientdefultid, setvarientdefultid] = useState([]);
   const [starcoutid, setstarcoutid] = useState("");
   const [breadCrumbarray, setbreadCrumbarray] = useState([]);
-  var getTagManagerCheck=true
+  var getTagManagerCheck = true;
   // const [relateClick,setRelateClick]=useState(0)
   const scrollToRef = (ref) => {
     const yOffset = -50;
@@ -55,14 +54,14 @@ const ProductDefaultPage = ({ query }) => {
   const dispatch = useDispatch();
   let productDetail = useSelector((s) => s.product);
   let productLoadInitiate = useSelector((s) => s.product.productLoading);
-const [count, setCount]=useState(0)
+  const [count, setCount] = useState(0);
   const { t } = useTranslation("common");
   const network = useNetwork();
   let serveUdweu = apiUrl;
 
   useEffect(() => {
-    dispatch(getsliderimageclicks([]))
-    
+    dispatch(getsliderimageclicks([]));
+
     if (network === false) {
       Router.push("/network-error");
     }
@@ -73,7 +72,7 @@ const [count, setCount]=useState(0)
 
   useEffect(() => {
     dispatch(getProductByLoading(true));
-    dispatch(getvarientproducthidefun(false))
+    dispatch(getvarientproducthidefun(false));
     // const { query } = this.props;
     if (pid === undefined) {
       Router.push("/page/page-404");
@@ -102,12 +101,12 @@ const [count, setCount]=useState(0)
       productRatingApi(pid, setRatingInfo, dispatch);
       // homeBannerApi(setBanner);
     }
-   
+
     Router.events.on("routeChangeStart", (url) => {
       const nextPid = url.split("/").pop();
       if (nextPid !== "" && isNaN(parseInt(nextPid)) === false) {
         dispatch(getProductByLoading(true));
-        dispatch(getvarientproducthidefun(false))
+        dispatch(getvarientproducthidefun(false));
         getProductDetApi(
           nextPid,
           dispatch,
@@ -194,7 +193,6 @@ const [count, setCount]=useState(0)
   }, [breadCategory]);
 
   useEffect(() => {
-   
     if (showModal) {
       document.body.classList.add("scroll-block-home");
     } else {
@@ -202,18 +200,24 @@ const [count, setCount]=useState(0)
     }
   }, [showModal]);
 
-  useEffect(()=>{
-    if(productDetail && productDetail.singleProduct && productDetail.singleProduct.productSellingPrice){
-      setCount(prevCount=>{
-        const newCount = prevCount+1
-        if(newCount==1){
-          let fbData = [{
-            "currency": "INR",
-            "content_ids": productDetail.singleProduct.skuName,
-            "content_name": productDetail.singleProduct.name,
-            "price": productDetail.singleProduct.productSellingPrice
-         }]
-          facebookGtm(fbData, 'ViewContent')
+  useEffect(() => {
+    if (
+      productDetail &&
+      productDetail.singleProduct &&
+      productDetail.singleProduct.productSellingPrice
+    ) {
+      setCount((prevCount) => {
+        const newCount = prevCount + 1;
+        if (newCount == 1) {
+          let fbData = [
+            {
+              currency: "INR",
+              content_ids: productDetail.singleProduct.skuName,
+              content_name: productDetail.singleProduct.name,
+              price: productDetail.singleProduct.productSellingPrice,
+            },
+          ];
+          facebookGtm(fbData, "ViewContent");
           ga.pushToDataLayer({
             event: "view_item",
             ecommerce: {
@@ -225,21 +229,21 @@ const [count, setCount]=useState(0)
                   item_name: productDetail.singleProduct.name,
                   index: 0,
                   price: productDetail.singleProduct.productSellingPrice,
-                  quantity: 1
-                }
-              ]
-            }
-          })
+                  quantity: 1,
+                },
+              ],
+            },
+          });
         }
-        return newCount
-      })
-  }
-    getTagManagerCheck=false
-  },[productDetail])
+        return newCount;
+      });
+    }
+    getTagManagerCheck = false;
+  }, [productDetail]);
 
   return (
     <div className="layout--product">
-      <HeaderDefault />
+      {/* <HeaderDefault /> */}
       <HeaderMobileProduct />
       <NavigationList />
       <ThemeChanger />
@@ -270,7 +274,7 @@ const [count, setCount]=useState(0)
         })        
       } */}
 
-{/* {
+      {/* {
 
 ga.pushToDataLayer({
   event: "view_item",
@@ -301,43 +305,47 @@ ga.pushToDataLayer({
             marginBottom: "16px",
           }}
         >
-          <div className="ps-breadcrumb" >
-            
+          <div className="ps-breadcrumb">
             {breadCrumb[0].text === false ? (
               <ul className="breadcrumb">
                 <li>{singleProduct.name}</li>
-               
               </ul>
             ) : (
               <>
                 {breadCrumb &&
                   breadCrumb.map((value, index) => (
                     <div className="fullwidth">
+                      {console.log("value---->", value)}
                       {/* <Link href={value.href} as={value.as}> */}
-                        <ul className="productDetail breadcrumb">
-                          <li><Link href={"/"}>Home</Link></li>
-                          {value.text &&
-                            value.text?.map((val, index) => (
-                              
-                              <React.Fragment>
-                                <li key={index}>
-                                  {value && value.text.length == index+1 ? val.categoryName:<Link href={"/"+val.categorySlug}>{val.categoryName}</Link>}
-                                  {/* <a>{val.categoryName}</a> */}
-                                  
-                                </li>
-                              </React.Fragment>
-                            ))}
-                        </ul>
+                      <ul className="productDetail breadcrumb">
+                        <li>
+                          <Link href={"/"}>Home</Link>
+                        </li>
+                        {value.text &&
+                          value.text?.map((val, index) => (
+                            <React.Fragment>
+                              <li key={index}>
+                                {value && value.text.length == index + 1 ? (
+                                  val.categoryName
+                                ) : (
+                                  <Link href={"/" + val.categorySlug}>
+                                    {val.categoryName}
+                                  </Link>
+                                )}
+                                {/* <a>{val.categoryName}</a> */}
+                              </li>
+                            </React.Fragment>
+                          ))}
+                      </ul>
                       {/* </Link> */}
                     </div>
                   ))}
-                  {/* <div className="fullwidth">
+                {/* <div className="fullwidth">
                     <ul className="breadcrumb">
                       <li style={{color: "#0276a0"}}>{productDetail.singleProduct.name}</li>
                     </ul>
                   
                   </div> */}
-                  
               </>
             )}
           </div>
@@ -389,9 +397,9 @@ ga.pushToDataLayer({
                 </div>
               ) : ( */}
               {/* <SpurtRelatedProduct /> */}
-              <SpurtRelatedProduct productId={productDetail.singleProduct.productId}/>
-               
-              
+              <SpurtRelatedProduct
+                productId={productDetail.singleProduct.productId}
+              />
             </div>
           </div>
         ) : (
