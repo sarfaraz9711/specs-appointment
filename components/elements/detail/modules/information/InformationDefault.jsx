@@ -1374,7 +1374,10 @@ function InformationDefault({
                         window.location = "/appointment/camera";
                       }}
                     >
-                      <img src="/static/img/camera-icon.svg" alt="Try Frame" />
+                      <i
+                        className="fa fa-camera"
+                        style={{ marginRight: "8px" }}
+                      ></i>
                       TRY FRAME
                       {/* {t("products.TryFrame")} */}
                     </button>
