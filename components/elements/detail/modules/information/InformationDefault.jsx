@@ -1367,20 +1367,6 @@ function InformationDefault({
                       <img src="/static/img/cart-icon.svg" />
                       {t("products.GoToCart")}
                     </button>
-
-                    <button
-                      className={`custom-product-addToCart ${currentColor}`}
-                      onClick={(e) => {
-                        window.location = "/appointment/camera";
-                      }}
-                    >
-                      <i
-                        className="fa fa-camera"
-                        style={{ marginRight: "8px" }}
-                      ></i>
-                      TRY FRAME
-                      {/* {t("products.TryFrame")} */}
-                    </button>
                   </>
                 )}
               {/* 
@@ -1452,6 +1438,19 @@ function InformationDefault({
                 )}
             </div>
           )}
+
+          {
+            <button
+              className={`custom-product-addToCart ${currentColor}`}
+              onClick={(e) => {
+                window.location = "/appointment/camera";
+              }}
+            >
+              <i className="fa fa-camera" style={{ marginRight: "8px" }}></i>
+              TRY FRAME
+              {/* {t("products.TryFrame")} */}
+            </button>
+          }
           {/* <br /> */}
 
           {/* <div className="pin-check">
