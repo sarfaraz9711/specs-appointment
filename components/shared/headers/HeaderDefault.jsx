@@ -228,14 +228,33 @@ function HeaderDefault() {
                       {/* <Link href="/franchise">
                         <a className="btn btn-primary">Franchise</a>
                       </Link> */}
-                      <input
+                      {/* <input
                         onClick={(e) =>
                           routeNavigate("/appointment/book-appointment")
                         }
                         type="button"
                         className="btn btn-primary mr-3"
                         value="Book Appointment"
-                      />
+                      /> */}
+                      {getUserDetails?.customerType == 2 ? (
+                        <input
+                          onClick={() =>
+                            routeNavigate("/appointment/view-appointments")
+                          }
+                          type="button"
+                          className="btn btn-primary mr-3"
+                          value="View Appointments"
+                        />
+                      ) : (
+                        <input
+                          onClick={() =>
+                            routeNavigate("/appointment/book-appointment")
+                          }
+                          type="button"
+                          className="btn btn-primary mr-3"
+                          value="Book Appointment"
+                        />
+                      )}
                     </li>
                     <li className="list-inline-item">
                       <a

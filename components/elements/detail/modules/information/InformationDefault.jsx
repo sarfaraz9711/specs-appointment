@@ -1436,21 +1436,33 @@ function InformationDefault({
                     {t("products.OrderNow")}
                   </button>
                 )}
+              {
+                <button
+                  className={`custom-product-addToCart ${currentColor}`}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    padding: "10px 18px",
+                    border: "none",
+                    cursor: "pointer",
+                    fontWeight: "500",
+                    marginLeft: "8px",
+                  }}
+                  onClick={(e) => {
+                    window.location = "/appointment/camera";
+                  }}
+                >
+                  <i
+                    className="fa fa-camera"
+                    style={{ marginRight: "8px" }}
+                  ></i>
+                  TRY FRAME
+                </button>
+              }
             </div>
           )}
 
-          {
-            <button
-              className={`custom-product-addToCart ${currentColor}`}
-              onClick={(e) => {
-                window.location = "/appointment/camera";
-              }}
-            >
-              <i className="fa fa-camera" style={{ marginRight: "8px" }}></i>
-              TRY FRAME
-              {/* {t("products.TryFrame")} */}
-            </button>
-          }
           {/* <br /> */}
 
           {/* <div className="pin-check">

@@ -40,6 +40,9 @@ export default function AppointmentBooking() {
   const [getAddressName, setAddressName] = useState("");
   const [getAddressMobile, setAddressMobile] = useState("");
   const [getAddAddress, setAddAddress] = useState("");
+  const [enteredMobileNumber, setEnteredMobileNumber] = useState("");
+  const [enteredName, setEnteredName] = useState("");
+
   useEffect(() => {
     const todayDate = moment(new Date()).format("YYYY-MM-DD");
     getCalenderData(todayDate);
@@ -54,17 +57,41 @@ export default function AppointmentBooking() {
     getAppointment(userDetails);
   }, []);
 
+  // const getAppointment = async (userDetails) => {
+  //   console.log(userDetails);
+  //   const json = { mobile: userDetails.mobileNumber };
+  //   const result = await getAppointmentByUser(json);
+  //   if (result.status == 200) {
+  //     setNextAppointment(result.data);
+  //   } else {
+  //     setNextAppointment(null);
+  //   }
+  //   console.log(result);
+  // };
   const getAppointment = async (userDetails) => {
-    console.log(userDetails);
-    const json = { mobile: userDetails.mobileNumber };
-    const result = await getAppointmentByUser(json);
-    if (result.status == 200) {
-      setNextAppointment(result.data);
-    } else {
+    try {
+      if (!userDetails || !userDetails.mobileNumber) {
+        console.warn("No user details available — skipping appointment fetch.");
+        setNextAppointment(null);
+        return;
+      }
+
+      const json = { mobile: userDetails.mobileNumber };
+      const result = await getAppointmentByUser(json);
+
+      if (result.status === 200) {
+        setNextAppointment(result.data);
+      } else {
+        setNextAppointment(null);
+      }
+
+      console.log("Appointment data:", result);
+    } catch (error) {
+      console.error("Error fetching appointment:", error);
       setNextAppointment(null);
     }
-    console.log(result);
   };
+
   const getCalenderData = async (date) => {
     const json = { findDate: date };
     const result = await appointmentDetails(json);
@@ -240,8 +267,65 @@ export default function AppointmentBooking() {
     }
   };
 
+  // const handleBook = async () => {
+  //   if (!selectedDate || !selectedSlot) return;
+  //   setLoading(true);
+  //   setMessage({ show: false, message: "", class: "" });
+
+  //   try {
+  //     const json = {
+  //       appointmentDate: selectedDate,
+  //       appointmentTime: selectedSlot,
+  //       mobile: getUserDetails.mobileNumber,
+  //       fullName: `${getUserDetails.firstName} ${getUserDetails.lastName}`,
+  //       address: `${getAddressName} ${getAddressMobile} ${getAddAddress}`,
+  //       appointmentStatus: "Pending",
+  //       isActive: 1,
+  //       userId: getUserDetails.id,
+  //       remarks: "submit by user",
+  //     };
+
+  //     await bookAppointment(json);
+
+  //     const displayDate = formatDMY(new Date(selectedDate));
+  //     getCalenderData(selectedDate);
+  //     setSelectedSlot(null);
+  //     setMessage({
+  //       show: true,
+  //       message: `✅ Appointment booked for ${displayDate} at ${selectedSlot}`,
+  //       class: "alert alert-success",
+  //     });
+  //     getAppointment(getUserDetails);
+  //     setAddAddressPopup(false);
+  //   } catch (err) {
+  //     setMessage({
+  //       show: true,
+  //       message: `❌ Failed to book appointment. Try again.`,
+  //       class: "alert alert-danger",
+  //     });
+  //     console.error(err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const handleBook = async () => {
     if (!selectedDate || !selectedSlot) return;
+
+    const mobileNumber =
+      getUserDetails && getUserDetails.mobileNumber
+        ? getUserDetails.mobileNumber
+        : getMobileNo;
+
+    if (!mobileNumber) {
+      setMessage({
+        show: true,
+        message: "❌ Please enter mobile number before booking.",
+        class: "alert alert-danger",
+      });
+      return;
+    }
+
     setLoading(true);
     setMessage({ show: false, message: "", class: "" });
 
@@ -249,12 +333,15 @@ export default function AppointmentBooking() {
       const json = {
         appointmentDate: selectedDate,
         appointmentTime: selectedSlot,
-        mobile: getUserDetails.mobileNumber,
-        fullName: `${getUserDetails.firstName} ${getUserDetails.lastName}`,
-        address: `${getAddressName} ${getAddressMobile} ${getAddAddress}`,
+        mobile: mobileNumber,
+        fullName:
+          getUserDetails && getUserDetails.firstName
+            ? `${getUserDetails.firstName} ${getUserDetails.lastName}`
+            : getAddressName,
+        address: `${getAddressName} ${mobileNumber} ${getAddAddress}`,
         appointmentStatus: "Pending",
         isActive: 1,
-        userId: getUserDetails.id,
+        userId: getUserDetails && getUserDetails.id ? getUserDetails.id : null,
         remarks: "submit by user",
       };
 
@@ -268,7 +355,11 @@ export default function AppointmentBooking() {
         message: `✅ Appointment booked for ${displayDate} at ${selectedSlot}`,
         class: "alert alert-success",
       });
-      getAppointment(getUserDetails);
+
+      if (getUserDetails && getUserDetails.mobileNumber) {
+        getAppointment(getUserDetails);
+      }
+
       setAddAddressPopup(false);
     } catch (err) {
       setMessage({
@@ -282,25 +373,70 @@ export default function AppointmentBooking() {
     }
   };
 
+  // const selectAppointmentTime = async (slot) => {
+  //   const checkPastSlot = isPastSlot(slot, selectedDate);
+  //   console.log(checkPastSlot);
+
+  //   setMessage({ show: false, message: ``, class: "" });
+  //   if (!checkPastSlot) {
+  //     const json = {
+  //       appointmentDate: selectedDate,
+  //       mobile: getUserDetails.mobileNumber,
+  //     };
+  //     const result = await checkAppointment(json);
+  //     console.log(result);
+  //     setSelectedSlot(slot);
+  //     if (result.status == 200) {
+  //       setSlotAvailableMsg(false);
+  //     } else {
+  //       setSlotAvailableMsg(true);
+  //       setSlotAavailableData(result.data);
+  //     }
+  //     setPreviousTimeSlot(false);
+  //   } else {
+  //     setPreviousTimeSlot(true);
+  //   }
+  // };
+
   const selectAppointmentTime = async (slot) => {
     const checkPastSlot = isPastSlot(slot, selectedDate);
     console.log(checkPastSlot);
 
     setMessage({ show: false, message: ``, class: "" });
+
     if (!checkPastSlot) {
+      if (!getUserDetails || !getUserDetails.mobileNumber) {
+        console.warn(
+          "User not logged in — cannot check appointment availability."
+        );
+        setSelectedSlot(slot);
+        setSlotAvailableMsg(false);
+        setPreviousTimeSlot(false);
+        return;
+      }
+
       const json = {
         appointmentDate: selectedDate,
         mobile: getUserDetails.mobileNumber,
       };
-      const result = await checkAppointment(json);
-      console.log(result);
-      setSelectedSlot(slot);
-      if (result.status == 200) {
-        setSlotAvailableMsg(false);
-      } else {
+
+      try {
+        const result = await checkAppointment(json);
+        console.log(result);
+        setSelectedSlot(slot);
+
+        if (result.status === 200) {
+          setSlotAvailableMsg(false);
+        } else {
+          setSlotAvailableMsg(true);
+          setSlotAavailableData(result.data);
+        }
+      } catch (err) {
+        console.error("Error checking appointment:", err);
         setSlotAvailableMsg(true);
-        setSlotAavailableData(result.data);
+        setSlotAavailableData([]);
       }
+
       setPreviousTimeSlot(false);
     } else {
       setPreviousTimeSlot(true);
