@@ -1,87 +1,139 @@
-import React, { Component } from 'react';
-import Router, { useRouter } from 'next/router';
+import React, { Component } from "react";
+import Router, { useRouter } from "next/router";
 //import {ConnectPlugin}   from "../../../connectPlugins";
-import { connect, useDispatch, useSelector } from 'react-redux';
-import { Menu } from 'antd';
-import { useTranslation } from '../../../../i18n';
-import { Collapse, Checkbox } from 'antd';
-import { getProductsByPrice } from '../../../../store/product/action';
-import { useEffect } from 'react';
-import { useState } from 'react';
-import { Slider, InputNumber, Row, Col } from 'antd';
-import { productListApi, getProductDiscount } from '../../../../api';
-import { Range } from 'react-range';
-import { getProductVariants } from '../../../../api/filter/getVariants';
+import { connect, useDispatch, useSelector } from "react-redux";
+import { Menu } from "antd";
+import { useTranslation } from "../../../../i18n";
+import { Collapse, Checkbox } from "antd";
+import { getProductsByPrice } from "../../../../store/product/action";
+import { useEffect } from "react";
+import { useState } from "react";
+import { Slider, InputNumber, Row, Col } from "antd";
+import { productListApi, getProductDiscount } from "../../../../api";
+import { Range } from "react-range";
+import { getProductVariants } from "../../../../api/filter/getVariants";
 const { Panel } = Collapse;
 
-function ShopWidget({ type, categoryMain, setInitialLoad, brands, manuId, setManuId, maxPrice, setMaxPrice, setCategoryInitial, setSizeInitial, sizeInitialValue, setColorInitial, colorInitialValue, manuIdArray, setManuIdArray, brandFinal, setBrandFinal, categoryInitial, defaultCallValueInitial, orderBy, priceToInitial, priceMin, setPriceMin, openKeys, setOpenKeys, selectedCategoryId, categoryIdFinal, setCategoryIdFinal, setSelectedCategoryId, categoryIdState, setCategoryIdState, currency, setProductData, setLoader, priceFromInitial, setCrumbArray, offset, limit, reloadKey, searchKeywords }) {
-  const [priceMax, setPriceMax] = useState()
-  const [getAttribute, setgetAttribute] = useState([])
-  const [attmanuIdArr, setattmanuIdArr] = useState([])
-  const [triger, setTrigger] = useState(0)
-  const [colorsValueFilter, setColorsValueFilter] = useState([])
-  const [sizeValueFilter, setSizeValueFilter] = useState([])
-  const [typeValueFilter, setTypeValueFilter] = useState([])
-  const dispatch = useDispatch()
+function ShopWidget({
+  type,
+  categoryMain,
+  setInitialLoad,
+  brands,
+  manuId,
+  setManuId,
+  maxPrice,
+  setMaxPrice,
+  setCategoryInitial,
+  setSizeInitial,
+  sizeInitialValue,
+  setColorInitial,
+  colorInitialValue,
+  manuIdArray,
+  setManuIdArray,
+  brandFinal,
+  setBrandFinal,
+  categoryInitial,
+  defaultCallValueInitial,
+  orderBy,
+  priceToInitial,
+  priceMin,
+  setPriceMin,
+  openKeys,
+  setOpenKeys,
+  selectedCategoryId,
+  categoryIdFinal,
+  setCategoryIdFinal,
+  setSelectedCategoryId,
+  categoryIdState,
+  setCategoryIdState,
+  currency,
+  setProductData,
+  setLoader,
+  priceFromInitial,
+  setCrumbArray,
+  offset,
+  limit,
+  reloadKey,
+  searchKeywords,
+}) {
+  const [priceMax, setPriceMax] = useState();
+  const [getAttribute, setgetAttribute] = useState([]);
+  const [attmanuIdArr, setattmanuIdArr] = useState([]);
+  const [triger, setTrigger] = useState(0);
+  const [colorsValueFilter, setColorsValueFilter] = useState([]);
+  const [sizeValueFilter, setSizeValueFilter] = useState([]);
+  const [typeValueFilter, setTypeValueFilter] = useState([]);
+  const dispatch = useDispatch();
   const { SubMenu } = Menu;
-  const anything = useSelector(s => s.product)
-  const { t } = useTranslation('common');
-  let filterData = useSelector(s => s.filter)
-  const [typeValue, setTypeValue] = useState([])
-  const [colorsValue, setColorsValue] = useState([])
-  const [rangeSliderVaalue, setRangeSliderVaalue] = useState([0, 10000])
+  const anything = useSelector((s) => s.product);
+  const { t } = useTranslation("common");
+  let filterData = useSelector((s) => s.filter);
+  const [typeValue, setTypeValue] = useState([]);
+  const [colorsValue, setColorsValue] = useState([]);
+  const [rangeSliderVaalue, setRangeSliderVaalue] = useState([0, 10000]);
   const [sizeValue, setSizeValue] = useState([]);
   const [variantsTitle, setVarientsTitle] = useState([]);
   const [filtersData, setFiltersData] = useState([]);
-  const [ratingMaster, SetRatingMaster] = useState([{ "key": "5", label: "5 Star", checked: false }, { "key": "4", label: "4 Star", checked: false }, { "key": "3", label: "3 Star", checked: false }, { "key": "2", label: "2 Star", checked: false }, { "key": "1", label: "1 Star", checked: false }]);
+  const [ratingMaster, SetRatingMaster] = useState([
+    { key: "5", label: "5 Star", checked: false },
+    { key: "4", label: "4 Star", checked: false },
+    { key: "3", label: "3 Star", checked: false },
+    { key: "2", label: "2 Star", checked: false },
+    { key: "1", label: "1 Star", checked: false },
+  ]);
   const [ratingFilter, setRatingFilter] = useState([]);
-  const [getDiscountPercentFilter,setDiscountPercentFilter] = useState('');
-  const [getproductDiscountPercentMaster,productDiscountPercentMaster] = useState([]);
+  const [getDiscountPercentFilter, setDiscountPercentFilter] = useState("");
+  const [getproductDiscountPercentMaster, productDiscountPercentMaster] =
+    useState([]);
   const [selectedSubCatId, setSelectedSubCatId] = useState();
   const router = useRouter();
   let selectedCategory = categoryMain?.name;
-  const[selectedsubcategory, setSelectedSubCategory] = useState("");
+  const [selectedsubcategory, setSelectedSubCategory] = useState("");
 
   useEffect(() => {
     const querycategory = router.query.selectedCategory;
     const querySubcategory = router.query.selectedsubcategory;
-    if(selectedsubcategory =="" ||selectedsubcategory == undefined ){
+    if (selectedsubcategory == "" || selectedsubcategory == undefined) {
       setSelectedSubCategory(sessionStorage.getItem("selectedchildCategory"));
-    }else{
-      setSelectedSubCategory(querySubcategory)
+    } else {
+      setSelectedSubCategory(querySubcategory);
     }
-    console.log("selectedsubcategory",querycategory,querySubcategory)
+    console.log("selectedsubcategory", querycategory, querySubcategory);
 
-    if(querycategory && querycategory != "RC Sports"){
-      getProductVariants(dispatch, querycategory)
-    }else if(querySubcategory){
-      getProductVariants(dispatch, `${querycategory} ${querySubcategory}`)
+    if (querycategory && querycategory != "RC Sports") {
+      getProductVariants(dispatch, querycategory);
+    } else if (querySubcategory) {
+      getProductVariants(dispatch, `${querycategory} ${querySubcategory}`);
     }
-  },[])
+  }, []);
 
-  useEffect(()=>{
-  if (categoryMain) {
-    // const checkBox = document.getElementsByClassName("filterCheckBox")
-    // for (var i = 0; i < checkBox.length; i++) {
-    //   checkBox[i].checked = false;
-    // }
-    const selectedSubCatDet = categoryMain && categoryMain.children && categoryMain.children.filter(item => item.subCategorySelected)
-    setTypeValueFilter([]);
-    if (selectedSubCatDet && selectedSubCatDet.length > 0) {
-      let collectedCats = [];
-      for(let r=0; r<selectedSubCatDet.length;r++){
-        collectedCats.push(selectedSubCatDet[r].categoryId);
+  useEffect(() => {
+    if (categoryMain) {
+      // const checkBox = document.getElementsByClassName("filterCheckBox")
+      // for (var i = 0; i < checkBox.length; i++) {
+      //   checkBox[i].checked = false;
+      // }
+      const selectedSubCatDet =
+        categoryMain &&
+        categoryMain.children &&
+        categoryMain.children.filter((item) => item.subCategorySelected);
+      setTypeValueFilter([]);
+      if (selectedSubCatDet && selectedSubCatDet.length > 0) {
+        let collectedCats = [];
+        for (let r = 0; r < selectedSubCatDet.length; r++) {
+          collectedCats.push(selectedSubCatDet[r].categoryId);
+        }
+        setTypeValueFilter(collectedCats);
       }
-      setTypeValueFilter(collectedCats);
     }
-  }
-  let typeFilterArray = [];
-  categoryMain && categoryMain.children?.length > 0 && categoryMain.children.forEach(element => {
-    typeFilterArray.push({ key: element.categoryId, checked: false });
-  });
-  setTypeValue(typeFilterArray);
-
-}, [categoryMain])
+    let typeFilterArray = [];
+    categoryMain &&
+      categoryMain.children?.length > 0 &&
+      categoryMain.children.forEach((element) => {
+        typeFilterArray.push({ key: element.categoryId, checked: false });
+      });
+    setTypeValue(typeFilterArray);
+  }, [categoryMain]);
   // if(sizeInitialValue!=undefined && sizeInitialValue!=null && sizeInitialValue!=""){
   //   console.log(sizeInitialValue)
   //   if(sizeInitialValue.length>0)
@@ -112,8 +164,6 @@ function ShopWidget({ type, categoryMain, setInitialLoad, brands, manuId, setMan
   //   dispatch(getProductsByPrice(params));
   // }
 
-
-
   // const handleFilterProductsByCategory = (e, slug) => {
   //   e.preventDefault();
   //   if (slug !== null) {
@@ -134,61 +184,63 @@ function ShopWidget({ type, categoryMain, setInitialLoad, brands, manuId, setMan
       return rv;
     }, {});
   };
-  
 
   useEffect(() => {
-
     let _newOffers = [
-      {discount: 0},
-      {discount: 10},
-      {discount: 20},
-      {discount: 30},
-      {discount: 40},
-      {discount: 50},
-      {discount: 60},
-      {discount: 70},
-      {discount: 80},
-    ]
+      { discount: 0 },
+      { discount: 10 },
+      { discount: 20 },
+      { discount: 30 },
+      { discount: 40 },
+      { discount: 50 },
+      { discount: 60 },
+      { discount: 70 },
+      { discount: 80 },
+    ];
     productDiscountPercentMaster(_newOffers);
 
-    setRangeSliderVaalue([0,10000])
+    setRangeSliderVaalue([0, 10000]);
     let selectedMenuItem = sessionStorage.getItem("selectedMenuItem");
-    
+
     let colorFilterArray = [];
     let sizeFilterArray = [];
     let typeFilterArray = [];
-    categoryMain && categoryMain.children?.length > 0 && categoryMain.children.forEach(element => {
-      typeFilterArray.push({ key: element.categoryId, checked: false });
-    });
+    categoryMain &&
+      categoryMain.children?.length > 0 &&
+      categoryMain.children.forEach((element) => {
+        typeFilterArray.push({ key: element.categoryId, checked: false });
+      });
     setTypeValue(typeFilterArray);
 
-setTimeout(() => {
-if(filterData && filterData.productVariants && filterData.productVariants.length==0){
-  filterData=JSON.parse(sessionStorage.getItem("filterData"))
-}
-    for (var i in filterData.productVariants) {
-      filterData.productVariants[i].key = filterData.productVariants[i].valueName;
-      filterData.productVariants[i].checked = false
-    };
+    setTimeout(() => {
+      if (
+        filterData &&
+        filterData.productVariants &&
+        filterData.productVariants.length == 0
+      ) {
+        filterData = JSON.parse(sessionStorage.getItem("filterData"));
+      }
+      for (var i in filterData.productVariants) {
+        filterData.productVariants[i].key =
+          filterData.productVariants[i].valueName;
+        filterData.productVariants[i].checked = false;
+      }
 
-    let groupedFilteredData = groupBy(filterData.productVariants, 'name');
-    if(Object.keys(groupedFilteredData).length>0){
-const sortSize = groupedFilteredData.Size.sort((a,b)=>{
-      return a.valueName-b.valueName
-    })
-    groupedFilteredData.Size=sortSize
-  }
+      let groupedFilteredData = groupBy(filterData.productVariants, "name");
+      if (Object.keys(groupedFilteredData).length > 0) {
+        const sortSize = groupedFilteredData.Size.sort((a, b) => {
+          return a.valueName - b.valueName;
+        });
+        groupedFilteredData.Size = sortSize;
+      }
 
-    setFiltersData(groupedFilteredData);
-    console.log("groupedFilteredData",groupedFilteredData)
-    const filtersTitle = Object.keys(groupedFilteredData)
-    console.log("filtersTitle",filtersTitle)
-    setVarientsTitle(filtersTitle);
-  }, 1000);
-
-  }, [filterData])
-
-
+      setFiltersData(groupedFilteredData);
+      console.log("groupedFilteredData", groupedFilteredData);
+      const filtersTitle = Object.keys(groupedFilteredData);
+      console.log("filtersTitle", filtersTitle);
+      setVarientsTitle(filtersTitle);
+    }, 1000);
+  }, [filterData]);
 
   // const handleCheck = (e, defaultCallValueInitial) => {
 
@@ -205,7 +257,6 @@ const sortSize = groupedFilteredData.Size.sort((a,b)=>{
   //   let manuIdString = manuSubArray.toString()
   //   setManuIdArray(manuSubArray)
 
-
   //   Router.push({
   //     pathname: `/[...sid]`, query: {
   //       attribute: "",
@@ -215,7 +266,7 @@ const sortSize = groupedFilteredData.Size.sort((a,b)=>{
   //       defaultCallValue: orderBy,
   //       offset: 0,
   //       index: 0,
-  //       categorySlug: categoryInitial, 
+  //       categorySlug: categoryInitial,
   //       categoryId: categoryIdState,
   //     }
   //   }
@@ -229,7 +280,7 @@ const sortSize = groupedFilteredData.Size.sort((a,b)=>{
   //         defaultCallValue: orderBy,
   //         offset: 0,
   //         index: 0,
-  //         categorySlug: categoryInitial, 
+  //         categorySlug: categoryInitial,
   //         categoryId: categoryIdState,
   //       },
   //     })
@@ -244,7 +295,7 @@ const sortSize = groupedFilteredData.Size.sort((a,b)=>{
 
   const cookQueryParamsForCheckedVarients = (r) => {
     const entries = Object.entries(r);
-console.log("entries",entries)
+    console.log("entries", entries);
     let urlString = "";
     const manipulateSizeArray = ["L", "M", "S", "L", "XL", "XXL"];
     for (let i = 0; i < entries.length; i++) {
@@ -253,32 +304,37 @@ console.log("entries",entries)
       urlString = urlString + entries[i][0] + "=";
 
       for (let j = 0; j < entries[i][1].length; j++) {
-
         if (entries[i][1][j].checked) {
-
-          if(entries[i][1][j].name == "Size" && manipulateSizeArray.includes(entries[i][1][j].key)){
-            urlString = urlString + "1000"+entries[i][1][j].key + ",";
-          }else if(entries[i][1][j].name == "Size" && entries[i][1][j].key.includes("*")){
-            urlString = urlString + "1000"+entries[i][1][j].key.replaceAll('*', "") + ",";
-          }else{
-          urlString = urlString + entries[i][1][j].key + ",";
+          if (
+            entries[i][1][j].name == "Size" &&
+            manipulateSizeArray.includes(entries[i][1][j].key)
+          ) {
+            urlString = urlString + "1000" + entries[i][1][j].key + ",";
+          } else if (
+            entries[i][1][j].name == "Size" &&
+            entries[i][1][j].key.includes("*")
+          ) {
+            urlString =
+              urlString +
+              "1000" +
+              entries[i][1][j].key.replaceAll("*", "") +
+              ",";
+          } else {
+            urlString = urlString + entries[i][1][j].key + ",";
           }
         }
-console.log("urlString",urlString)
+        console.log("urlString", urlString);
         if (entries[i][1].length == j + 1) {
-
           r = urlString.substring(0, urlString.length - 1);
           urlString = r;
 
-          urlString += "&"
+          urlString += "&";
         }
       }
-
-
     }
     const finalQueryStr = urlString.substring(0, urlString.length - 1);
     return finalQueryStr;
-  }
+  };
 
   const cookQueryParamsForRating = (selectedRating) => {
     const checkedRating = selectedRating.filter((rating) => rating.checked);
@@ -286,74 +342,93 @@ console.log("urlString",urlString)
     let urlString = "rating=";
     if (checkedRating && checkedRating.length > 0) {
       for (let i = 0; i < checkedRating.length; i++) {
-        if(i==checkedRating.length-1){
-          urlString = urlString+checkedRating[i].key;
-        }else{
-        urlString = urlString+checkedRating[i].key+",";
+        if (i == checkedRating.length - 1) {
+          urlString = urlString + checkedRating[i].key;
+        } else {
+          urlString = urlString + checkedRating[i].key + ",";
         }
       }
     }
     return urlString;
-    
-  }
+  };
 
-  const handleCategoryPush = (action, e, categorySlug, categoryId, sizeValueFilter, colorsValueFilter, filtersDataArg, selectedRating, discountOfferId, selectedCategory,selectedsubcategory) => {
+  const handleCategoryPush = (
+    action,
+    e,
+    categorySlug,
+    categoryId,
+    sizeValueFilter,
+    colorsValueFilter,
+    filtersDataArg,
+    selectedRating,
+    discountOfferId,
+    selectedCategory,
+    selectedsubcategory
+  ) => {
     if (action == "reset") {
-      const checkBox = document.getElementsByClassName("filterCheckBox")
+      const checkBox = document.getElementsByClassName("filterCheckBox");
       for (var i = 0; i < checkBox.length; i++) {
         checkBox[i].checked = false;
       }
-      categoryMain && categoryMain.children && categoryMain.children.map(item=>{
-         return item.subCategorySelected=false 
-      })
-      filtersDataArg = []
+      categoryMain &&
+        categoryMain.children &&
+        categoryMain.children.map((item) => {
+          return (item.subCategorySelected = false);
+        });
+      filtersDataArg = [];
       //setRangeSliderVaalue([0, 10000])
       selectedRating = [];
       categoryId = [];
-      rangeSliderVaalue[1] = 10000
-      rangeSliderVaalue[0] = 0
-      filtersData && filtersData.Color && filtersData.Color.map(item=>item.checked=false)
-      filtersData && filtersData.Size && filtersData.Size.map(item=>item.checked=false)
-      setFiltersData(filtersData)
+      rangeSliderVaalue[1] = 10000;
+      rangeSliderVaalue[0] = 0;
+      filtersData &&
+        filtersData.Color &&
+        filtersData.Color.map((item) => (item.checked = false));
+      filtersData &&
+        filtersData.Size &&
+        filtersData.Size.map((item) => (item.checked = false));
+      setFiltersData(filtersData);
       setDiscountPercentFilter("");
     }
-    
-    const finalFilteredQueryparams = cookQueryParamsForCheckedVarients(filtersDataArg);
-    console.log("finalFilteredQueryparams",finalFilteredQueryparams)
-    setCategoryInitial(categorySlug);
-   const paramsForRating = cookQueryParamsForRating(selectedRating);
-    // setAnkleInitial(ankleInitial)
-    
 
+    const finalFilteredQueryparams =
+      cookQueryParamsForCheckedVarients(filtersDataArg);
+    console.log("finalFilteredQueryparams", finalFilteredQueryparams);
+    setCategoryInitial(categorySlug);
+    const paramsForRating = cookQueryParamsForRating(selectedRating);
+    // setAnkleInitial(ankleInitial)
 
     let colorFilterString = colorsValueFilter.toString();
     let sizeFilterString = sizeValueFilter.toString();
-    console.log(categoryId, 'asdsadasdsa')
+    console.log(categoryId, "asdsadasdsa");
     let categoryFilterString = categoryId.toString();
-    setInitialLoad(true)
-    Router.push({
-      pathname: `/[...sid]`, query: {
-        attribute: searchKeywords,
-        priceFrom: rangeSliderVaalue[0],
-        priceTo: rangeSliderVaalue[1],
-        brand: manuId,
-        variantValue: "",
-        defaultCallValue: orderBy,
-        offset: 0,
-        index: 0,
-        categorySlug: categorySlug,
-        categoryId: categoryFilterString,
-        sizeValueFilter: sizeFilterString,
-        colorsValueFilter: colorFilterString,
-        finalFilteredQueryparams: finalFilteredQueryparams,
-        paramsForRating,
-        productDiscountPercent : action == "reset"? "" : getDiscountPercentFilter,
-        discountOfferId : discountOfferId,
-        selectedCategory :selectedCategory,
-        selectedsubcategory:selectedsubcategory
-      }
-    }
-      , {
+    setInitialLoad(true);
+    Router.push(
+      {
+        pathname: `/[...sid]`,
+        query: {
+          attribute: searchKeywords,
+          priceFrom: rangeSliderVaalue[0],
+          priceTo: rangeSliderVaalue[1],
+          brand: manuId,
+          variantValue: "",
+          defaultCallValue: orderBy,
+          offset: 0,
+          index: 0,
+          categorySlug: categorySlug,
+          categoryId: categoryFilterString,
+          sizeValueFilter: sizeFilterString,
+          colorsValueFilter: colorFilterString,
+          finalFilteredQueryparams: finalFilteredQueryparams,
+          paramsForRating,
+          productDiscountPercent:
+            action == "reset" ? "" : getDiscountPercentFilter,
+          discountOfferId: discountOfferId,
+          selectedCategory: selectedCategory,
+          selectedsubcategory: selectedsubcategory,
+        },
+      },
+      {
         pathname: `/${categorySlug}`,
         query: {
           attribute: searchKeywords,
@@ -370,15 +445,15 @@ console.log("urlString",urlString)
           colorsValueFilter: colorFilterString,
           finalFilteredQueryparams: finalFilteredQueryparams,
           paramsForRating,
-          productDiscountPercent : action == "reset"? "" : getDiscountPercentFilter,
-          discountOfferId : discountOfferId,
-          selectedCategory :selectedCategory,
-          selectedsubcategory:selectedsubcategory
+          productDiscountPercent:
+            action == "reset" ? "" : getDiscountPercentFilter,
+          discountOfferId: discountOfferId,
+          selectedCategory: selectedCategory,
+          selectedsubcategory: selectedsubcategory,
         },
-      })
-
-
-  }
+      }
+    );
+  };
 
   // const handleSizePush = (e, ankleValue) => {
   //  console.log(ankleValue)
@@ -394,7 +469,7 @@ console.log("urlString",urlString)
   //       defaultCallValue: orderBy,
   //       offset: 0,
   //       index: 0,
-  //       categorySlug: categoryInitial, 
+  //       categorySlug: categoryInitial,
   //       categoryId: categoryIdState,
   //     }
   //   }
@@ -410,18 +485,17 @@ console.log("urlString",urlString)
   //         offset: 0,
   //         index: 0,
   //         keyword:reloadKey,
-  //         categorySlug:categoryInitial, 
+  //         categorySlug:categoryInitial,
   //         categoryId: categoryIdState,
   //       },
   //     })
 
-
   // }
 
   const checkValue = (e) => {
-    console.log(e)
-    setRangeSliderVaalue(e)
-  }
+    console.log(e);
+    setRangeSliderVaalue(e);
+  };
 
   // const priceChange = (value) => {
 
@@ -438,7 +512,7 @@ console.log("urlString",urlString)
   //       offset: 0,
   //       index: 0,
   //       keyword:reloadKey,
-  //       categorySlug: categoryInitial, 
+  //       categorySlug: categoryInitial,
   //       categoryId: categoryIdState,
   //     }
   //   }
@@ -454,7 +528,7 @@ console.log("urlString",urlString)
   //         offset: 0,
   //         index: 0,
   //         keyword:reloadKey,
-  //         categorySlug:categoryInitial, 
+  //         categorySlug:categoryInitial,
   //         categoryId: categoryIdState,
   //       },
   //     })
@@ -473,7 +547,7 @@ console.log("urlString",urlString)
   //       defaultCallValue: orderBy,
   //       offset: 0,
   //       index: 0,
-  //       categorySlug: categoryInitial, 
+  //       categorySlug: categoryInitial,
   //       categoryId: categoryIdState,
   //     }
   //   }
@@ -489,7 +563,7 @@ console.log("urlString",urlString)
   //         defaultCallValue: orderBy,
   //         offset: 0,
   //         index: 0,
-  //         categorySlug: categoryInitial, 
+  //         categorySlug: categoryInitial,
   //         categoryId: categoryIdState,
   //       },
   //     })
@@ -508,7 +582,7 @@ console.log("urlString",urlString)
   //       defaultCallValue: orderBy,
   //       offset: 0,
   //       index: 0,
-  //       categorySlug: categoryInitial, 
+  //       categorySlug: categoryInitial,
   //       categoryId: categoryIdState,
   //     }
   //   }
@@ -537,109 +611,158 @@ console.log("urlString",urlString)
     if (selectedCategoryId.length > 0) {
       let lastIndex = selectedCategoryId.length - 1;
       const selectCat = selectedCategoryId[lastIndex].categoryId;
-      setCategoryIdFinal([JSON.stringify(selectCat)])
+      setCategoryIdFinal([JSON.stringify(selectCat)]);
     }
-
-  }, [selectedCategoryId])
+  }, [selectedCategoryId]);
 
   const checkRating = (e, item, key, index) => {
     if (e.target.checked) {
-      
       ratingMaster[index].checked = true;
       setRatingFilter(ratingMaster);
-
-    }else{
+    } else {
       ratingMaster[index].checked = false;
       setRatingFilter(ratingMaster);
     }
-  }
+  };
 
   const checkDiscountPercent = (e, value) => {
-    console.log("value",value);
+    console.log("value", value);
     setDiscountPercentFilter(value.discount);
-  }
+  };
   const getTypeValue = (e, item, filterValue, filterId, funNo, index) => {
-
     if (e.target.checked) {
-      
       if (funNo == 1) {
-        
-        setTypeValueFilter(arrayValue => [...arrayValue, filterId]);
-        if(typeValue[index]){
-        typeValue[index]["checked"] = true;
-        setTypeValue(typeValue);
-        console.log("typeValue",typeValue)
+        setTypeValueFilter((arrayValue) => [...arrayValue, filterId]);
+        if (typeValue[index]) {
+          typeValue[index]["checked"] = true;
+          setTypeValue(typeValue);
+          console.log("typeValue", typeValue);
         }
       }
       if (funNo == 2) {
-
-        filtersData[item][index]["checked"] = true
-        setFiltersData(filtersData)
-        console.log(filtersData)
+        filtersData[item][index]["checked"] = true;
+        setFiltersData(filtersData);
+        console.log(filtersData);
       }
-
     } else {
-      categoryMain.children.map(item=>{
-        if(filterId==item.categoryId){
-         return item.subCategorySelected=false 
+      categoryMain.children.map((item) => {
+        if (filterId == item.categoryId) {
+          return (item.subCategorySelected = false);
         }
-        setTypeValueFilter(arrayValue=> arrayValue.filter((i)=>(i != filterId)))
-      })
-      let findIndex = 0
+        setTypeValueFilter((arrayValue) =>
+          arrayValue.filter((i) => i != filterId)
+        );
+      });
+      let findIndex = 0;
       if (funNo == 1) {
-        findIndex = typeValueFilter.findIndex(e => e == filterId);
+        findIndex = typeValueFilter.findIndex((e) => e == filterId);
         console.log(findIndex);
         typeValueFilter.splice(findIndex, 1);
-        console.log("typeValueFilter",typeValueFilter);
+        console.log("typeValueFilter", typeValueFilter);
         typeValue[index]["checked"] = false;
         setTypeValue(typeValue);
       }
       if (funNo == 2) {
+        filtersData[item][index]["checked"] = false;
 
-        filtersData[item][index]["checked"] = false
-
-        setFiltersData(filtersData)
-
+        setFiltersData(filtersData);
       }
-
     }
-
-    
-
-  }
-
+  };
 
   return (
     <div className="ps-layout__left">
-      <div className="ps-left-shop-subcontainer" id='filters'>
+      <div className="ps-left-shop-subcontainer" id="filters">
         <h2>Filter</h2>
-        <div className='filter-button d-flex justify-content-between pr-3'>
-        <input type="button" value="Apply" onClick={e => handleCategoryPush("apply", e, sessionStorage.getItem("parentCategorySlug"), typeValueFilter, sizeValueFilter, colorsValueFilter, filtersData, ratingFilter, sessionStorage.getItem("discountOfferId"), selectedCategory,selectedsubcategory)} />
-        <input type="button" value="Reset" onClick={e => handleCategoryPush("reset", e, sessionStorage.getItem("parentCategorySlug"), typeValueFilter, sizeValueFilter, colorsValueFilter, filtersData, ratingFilter, sessionStorage.getItem("discountOfferId"))} />
+        <div className="filter-button d-flex justify-content-between pr-3">
+          <input
+            type="button"
+            value="Apply"
+            onClick={(e) =>
+              handleCategoryPush(
+                "apply",
+                e,
+                sessionStorage.getItem("parentCategorySlug"),
+                typeValueFilter,
+                sizeValueFilter,
+                colorsValueFilter,
+                filtersData,
+                ratingFilter,
+                sessionStorage.getItem("discountOfferId"),
+                selectedCategory,
+                selectedsubcategory
+              )
+            }
+          />
+          <input
+            type="button"
+            value="Reset"
+            onClick={(e) =>
+              handleCategoryPush(
+                "reset",
+                e,
+                sessionStorage.getItem("parentCategorySlug"),
+                typeValueFilter,
+                sizeValueFilter,
+                colorsValueFilter,
+                filtersData,
+                ratingFilter,
+                sessionStorage.getItem("discountOfferId")
+              )
+            }
+          />
         </div>
         {/* <Collapse defaultActiveKey={['1', '2']} expandIconPosition="right" className="" bordered={false}> */}
         <Collapse expandIconPosition="right" className="" bordered={false}>
-         {categoryMain?.children &&
-          <Panel header="Type" className="site-collapse-left-category">
-
-            {categoryMain && categoryMain.children && categoryMain.children.length > 0 && categoryMain.children.map((subCat, i) => {
-              return <>
-                <div className="checkbox mb-3">
-                  {subCat.subCategorySelected?
-                  <input className='filterCheckBox' checked={subCat.subCategorySelected} onClick={e => getTypeValue(e, null, subCat.categorySlug, subCat.categoryId, 1, i)} type="checkbox" /> 
-                  : <input className='filterCheckBox' onClick={e => getTypeValue(e, null, subCat.categorySlug, subCat.categoryId, 1, i)} type="checkbox" /> 
-                  }
-                  <span> {subCat.name}</span></div>
-              </>
-            })}
-
-
-
-
-
-          </Panel>}
+          {categoryMain?.children && (
+            <Panel header="Type" className="site-collapse-left-category">
+              {categoryMain &&
+                categoryMain.children &&
+                categoryMain.children.length > 0 &&
+                categoryMain.children.map((subCat, i) => {
+                  return (
+                    <>
+                      <div className="checkbox mb-3">
+                        {subCat.subCategorySelected ? (
+                          <input
+                            className="filterCheckBox"
+                            checked={subCat.subCategorySelected}
+                            onClick={(e) =>
+                              getTypeValue(
+                                e,
+                                null,
+                                subCat.categorySlug,
+                                subCat.categoryId,
+                                1,
+                                i
+                              )
+                            }
+                            type="checkbox"
+                          />
+                        ) : (
+                          <input
+                            className="filterCheckBox"
+                            onClick={(e) =>
+                              getTypeValue(
+                                e,
+                                null,
+                                subCat.categorySlug,
+                                subCat.categoryId,
+                                1,
+                                i
+                              )
+                            }
+                            type="checkbox"
+                          />
+                        )}
+                        <span> {subCat.name}</span>
+                      </div>
+                    </>
+                  );
+                })}
+            </Panel>
+          )}
           <Panel header="Price" className="site-collapse-left-category">
-
             <Range
               step={10}
               min={0}
@@ -651,16 +774,17 @@ console.log("urlString",urlString)
                   {...props}
                   style={{
                     ...props.style,
-                    height: '6px',
-                    width: '100%',
-                    backgroundColor: '#ccc'
+                    height: "6px",
+                    width: "100%",
+                    backgroundColor: "#ccc",
                   }}
                 >
                   {children}
                 </div>
               )}
               renderThumb={({ props }) => (
-                <div className='range-slider'
+                <div
+                  className="range-slider"
                   {...props}
                   style={{
                     ...props.style,
@@ -673,51 +797,90 @@ console.log("urlString",urlString)
               <span>to</span>
               <input readOnly value={" ₹ " + rangeSliderVaalue[1]} />
             </div>
-
           </Panel>
 
-          {variantsTitle && variantsTitle.length > 0 && variantsTitle.map((item, index) => {
-            return <Panel header={item} className="site-collapse-left-category">
+          {variantsTitle &&
+            variantsTitle.length > 0 &&
+            variantsTitle.map((item, index) => {
+              return (
+                <Panel header={item} className="site-collapse-left-category">
+                  {filtersData &&
+                    filtersData[item].length > 0 &&
+                    filtersData[item].map((subCat, i) => {
+                      return (
+                        <>
+                          <div className="checkbox mb-3">
+                            <input
+                              className="filterCheckBox"
+                              onClick={(e) =>
+                                getTypeValue(
+                                  e,
+                                  item,
+                                  subCat.key,
+                                  selectedCategoryId,
+                                  2,
+                                  i
+                                )
+                              }
+                              type="checkbox"
+                              defaultChecked={subCat.checked}
+                              key={i}
+                            />{" "}
+                            <span> {subCat.key}</span>
+                          </div>
+                        </>
+                      );
+                    })}
+                </Panel>
+              );
+            })}
 
-              {filtersData && filtersData[item].length > 0 && filtersData[item].map((subCat, i) => {
-                return <>
-                  <div className="checkbox mb-3"><input className='filterCheckBox' onClick={e => getTypeValue(e, item, subCat.key, selectedCategoryId, 2, i)} type="checkbox" defaultChecked={subCat.checked} key={i} /> <span> {subCat.key}</span></div>
-                </>
+          {ratingMaster && ratingMaster.length > 0 && (
+            <Panel header={"Rating"} className="site-collapse-left-category">
+              {ratingMaster.map((item, index) => {
+                return (
+                  <div className="checkbox mb-3">
+                    <input
+                      className="filterCheckBox"
+                      onClick={(e) => checkRating(e, item, item.key, index)}
+                      type="checkbox"
+                      defaultChecked={item.checked}
+                      key={index}
+                    />{" "}
+                    <span> {item.label}</span>
+                  </div>
+                );
               })}
-
-
-
-
-
-
             </Panel>
-          })
-          }
+          )}
 
-
-          {ratingMaster && ratingMaster.length > 0 && <Panel header={"Rating"} className="site-collapse-left-category">
-
-            {
-              ratingMaster.map((item, index) => {
-                return <div className="checkbox mb-3">
-                  <input className='filterCheckBox' onClick={e => checkRating(e, item, item.key, index)} type="checkbox" defaultChecked={item.checked} key={index} /> <span> {item.label}</span></div>
-              })
-            }
-          </Panel>
-
-          }
-
-{getproductDiscountPercentMaster && getproductDiscountPercentMaster.length > 0 && <Panel header="Discount" className="site-collapse-left-category">
-
-{
-  getproductDiscountPercentMaster.map((item, index) => {
-    return <div className="checkbox mb-3">
-      <input className='filterCheckBox' checked={getDiscountPercentFilter===item.discount} onClick={e => checkDiscountPercent(e, item, item.discount, index)} type="radio" name='discountRange' value={item.discount} key={index} />  <span>{item.discount? item.discount+'% or More':'No Discount'}</span></div>
-  })
-}
-</Panel>
-}
-
+          {getproductDiscountPercentMaster &&
+            getproductDiscountPercentMaster.length > 0 && (
+              <Panel header="Discount" className="site-collapse-left-category">
+                {getproductDiscountPercentMaster.map((item, index) => {
+                  return (
+                    <div className="checkbox mb-3">
+                      <input
+                        className="filterCheckBox"
+                        checked={getDiscountPercentFilter === item.discount}
+                        onClick={(e) =>
+                          checkDiscountPercent(e, item, item.discount, index)
+                        }
+                        type="radio"
+                        name="discountRange"
+                        value={item.discount}
+                        key={index}
+                      />{" "}
+                      <span>
+                        {item.discount
+                          ? item.discount + "% or More"
+                          : "No Discount"}
+                      </span>
+                    </div>
+                  );
+                })}
+              </Panel>
+            )}
 
           {/* <Panel header="BRANDS" key="3" className="site-collapse-left-category">
             {brands && brands.map((brandInner, index) => (
@@ -731,10 +894,9 @@ console.log("urlString",urlString)
       </div>
     </div>
   );
-
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return state.product, state.setting;
 };
 export default connect(mapStateToProps)(ShopWidget);

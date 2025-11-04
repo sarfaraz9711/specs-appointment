@@ -13,7 +13,6 @@ import {
   getProducts,
   getProductsByCategory,
   getOrderBy,
-  
 } from "../store/product/action";
 import { getCollections } from "../store/collection/action";
 import { useEffect } from "react";
@@ -23,17 +22,16 @@ import { useState } from "react";
 import { productCountApi } from "../api";
 import { categoryListApi } from "../api";
 import { ManufacturerApi } from "../api";
-import { VarientApi } from "../api"
+import { VarientApi } from "../api";
 import { specificCategoryApi } from "../api";
 import ThemeChanger from "../components/elements/color/themeControl";
 import useNetwork from "../components/reusable/NetworkCheck";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import FooterFullwidth from "../components/shared/footers/FooterFullwidth";
-import Head from 'next/head'
+import Head from "next/head";
 import { getProductVariants } from "../api/filter/getVariants";
 function ShopDefaultPage(props, { query }) {
-  
   const router = useRouter();
 
   const dispatch = useDispatch();
@@ -61,105 +59,104 @@ function ShopDefaultPage(props, { query }) {
   const [selectedCategoryId, setSelectedCategoryId] = useState("");
   const [categoryIdFinal, setCategoryIdFinal] = useState("");
   const [crumbArray, setCrumbArray] = useState([]);
-  const [initialfinalFilteredQueryparams, setInitialfinalFilteredQueryparams] = useState("");
-  const[totalProductCount, setTotalProductCount] = useState(0);
+  const [initialfinalFilteredQueryparams, setInitialfinalFilteredQueryparams] =
+    useState("");
+  const [totalProductCount, setTotalProductCount] = useState(0);
 
   let orderBy = props.product.orderBy;
- 
+
   let price = props.product.price;
   // const router=useRouter();
   let reloadKey = router.query.keyword;
 
-  let filterValue = router.query.filterValue
-  let sizeValueFilter=router.query.sizeValueFilter
-  let colorsValueFilter=router.query.colorsValueFilter
+  let filterValue = router.query.filterValue;
+  let sizeValueFilter = router.query.sizeValueFilter;
+  let colorsValueFilter = router.query.colorsValueFilter;
   let filteredCatIds = router.query.categoryId;
   let keywords = router.query.sid;
   let finalFilteredQueryparams = router.query.finalFilteredQueryparams;
   let paramsForRating = router.query.paramsForRating;
-  
 
   let brandInitial = router.query.brand;
-  let currentvaluesof = router.query.currentpagevalues
+  let currentvaluesof = router.query.currentpagevalues;
   let searchKeywords = "";
-  let defaultCallValueInitial = 'MAX';
-  if(router.query.attribute){
+  let defaultCallValueInitial = "MAX";
+  if (router.query.attribute) {
     searchKeywords = router.query.attribute;
   }
-  if(router.query.defaultCallValue){
+  if (router.query.defaultCallValue) {
     defaultCallValueInitial = router.query.defaultCallValue;
   }
   //setSearch(router.query.attribute)
-  
-  let priceToInitial = router.query.priceTo?router.query.priceTo:0;
-  let priceFromInitial = router.query.priceFrom?router.query.priceFrom:20000;
-  let productDiscountPercent = (router.query.productDiscountPercent ? router.query.productDiscountPercent : '');
+
+  let priceToInitial = router.query.priceTo ? router.query.priceTo : 0;
+  let priceFromInitial = router.query.priceFrom
+    ? router.query.priceFrom
+    : 20000;
+  let productDiscountPercent = router.query.productDiscountPercent
+    ? router.query.productDiscountPercent
+    : "";
   //let defaultCallValueInitial = router.query.defaultCallValue;
-  let discountOfferId  = router.query.discountOfferId?router.query.discountOfferId:''
+  let discountOfferId = router.query.discountOfferId
+    ? router.query.discountOfferId
+    : "";
   //let offsetInitial = router.query.offset;
   let limitInitial = router.query.limit;
   let categoryIdInitial = router.query.categoryId;
   let logInfo = useSelector((s) => s.auth);
   /******************/
-  
+
   const urlPath = router.asPath;
-  let categorySlug = '';
+  let categorySlug = "";
   // let priceFromInitial = 0;
   // let priceToInitial = 20000;
-  
+
   let offsetInitial = 0;
   if (urlPath.indexOf("?") !== -1) {
     categorySlug = router.query.categorySlug;
   } else {
     let categorySlugBase = urlPath.split("/");
     let slugCount = categorySlugBase.length;
-    
+
     if (slugCount === 2) {
       categorySlug = categorySlugBase[1];
     }
     priceFromInitial = 0;
     priceToInitial = 20000;
-
   }
 
-
-  if(!categorySlug){
-
-    categorySlug = router.asPath.substring(1,router.asPath.indexOf('?'))
-    priceFromInitial=0
-    priceToInitial=20000
+  if (!categorySlug) {
+    categorySlug = router.asPath.substring(1, router.asPath.indexOf("?"));
+    priceFromInitial = 0;
+    priceToInitial = 20000;
   }
 
-  
   /*****************/
 
-
   const network = useNetwork();
-  
+
   useEffect(() => {
     if (network === false) {
       Router.push("/network-error");
     }
   }, [orderBy]);
- 
-;
 
-
-const category = useSelector(s => s.product.crumbarrcate)
-const filter = useSelector(s => s.filter)
-useEffect(()=>{
-  if(category && category.length>0 && filter.productVariants==0 && !sessionStorage.getItem("filterData")){
-  getProductVariants(dispatch, category[0].categoryName)
-  }
-},[])
-
+  const category = useSelector((s) => s.product.crumbarrcate);
+  const filter = useSelector((s) => s.filter);
+  useEffect(() => {
+    if (
+      category &&
+      category.length > 0 &&
+      filter.productVariants == 0 &&
+      !sessionStorage.getItem("filterData")
+    ) {
+      getProductVariants(dispatch, category[0].categoryName);
+    }
+  }, []);
 
   const productListApiCall = () => {
-
     if (categorySlug !== undefined && categorySlug !== "") {
-
-     
-     console.log("discountOfferId",discountOfferId)
+      console.log("discountOfferId", discountOfferId);
       setLoader(true);
       productListApi(
         dispatch,
@@ -185,7 +182,7 @@ useEffect(()=>{
         productDiscountPercent,
         discountOfferId,
         setTotalProductCount
-     );
+      );
 
       // productCountApi(dispatch, setCount,
       //   props.product.price,
@@ -197,13 +194,7 @@ useEffect(()=>{
       //   priceToInitial,
       //   priceFromInitial
       // );
-
-
-
-    }
-    else {
-
-      
+    } else {
       setLoader(true);
       productListApi(
         dispatch,
@@ -227,7 +218,7 @@ useEffect(()=>{
         productDiscountPercent,
         discountOfferId,
         setTotalProductCount
-     );
+      );
       // productCountApi(
       //   dispatch,
       //   setCount,
@@ -240,23 +231,17 @@ useEffect(()=>{
       //   priceToInitial ? priceToInitial : 50000000000,
       //   priceFromInitial ? priceFromInitial : 0
       // );
-     
     }
   };
 
-
-
   useEffect(() => {
- 
-   
     if (categorySlug) {
       ManufacturerApi(dispatch, setBrands, categorySlug);
     }
- 
   }, [categorySlug]);
 
   // useEffect(() => {
- 
+
   //   if (categorySlug) {
   //     VarientApi(dispatch, setVarient, categorySlug);
   //   }
@@ -264,23 +249,20 @@ useEffect(()=>{
   // }, [categorySlug]);
 
   useEffect(() => {
-    categoryListApi(dispatch,2);
+    categoryListApi(dispatch, 2);
   }, []);
 
   useEffect(() => {
     if (selectedCategoryId.length > 0) {
       let lastIndex = selectedCategoryId.length - 1;
       const selectCat = selectedCategoryId[lastIndex].categoryId;
-      
+
       setCategoryIdFinal(selectCat);
     }
   }, [selectedCategoryId]);
 
-
   useEffect(() => {
-    
     if (categorySlug !== undefined && categorySlug !== "") {
-     
       setInitialLoad(true);
       setCategoryInitial(categorySlug);
       setAnkleInitial(filterValue);
@@ -291,38 +273,37 @@ useEffect(()=>{
       setCategoryIdState(categoryIdInitial);
       setOpenKeys([categoryIdInitial]);
       setOffset(offsetInitial);
-      setSpecificCat('')
+      setSpecificCat("");
       priceFromInitial ? setPriceMin(priceFromInitial) : setPriceMin(0);
-      if(categorySlug !== "offer-discount"){
-      specificCategoryApi(categorySlug, setSpecificCat, setSelectedCategoryId);
-      }else{
+      if (categorySlug !== "offer-discount") {
+        specificCategoryApi(
+          categorySlug,
+          setSpecificCat,
+          setSelectedCategoryId
+        );
+      } else {
         sessionStorage.setItem("parentCategorySlug", "offer-discount");
-        sessionStorage.setItem("discountOfferId", discountOfferId)
-        getProductVariants(dispatch, 'all-categories')
+        sessionStorage.setItem("discountOfferId", discountOfferId);
+        getProductVariants(dispatch, "all-categories");
       }
       dispatch(getOrderBy(defaultCallValueInitial));
       productListApiCall();
-
     } else if (reloadKey !== undefined && reloadKey !== "") {
-
-     
       setInitialLoad(true);
       setCategoryInitial("");
       setAnkleInitial("");
       setColorInitial("");
       setSizeInitial("");
-      setInitialfinalFilteredQueryparams("")
+      setInitialfinalFilteredQueryparams("");
       setMaxPrice(priceToInitial);
       setCategoryIdState(categoryIdInitial);
       setOpenKeys([categoryIdInitial]);
       setOffset(offsetInitial);
-      setSpecificCat('')
+      setSpecificCat("");
       priceFromInitial ? setPriceMin(priceFromInitial) : setPriceMin(0);
       specificCategoryApi(categorySlug, setSpecificCat, setSelectedCategoryId);
       dispatch(getOrderBy(defaultCallValueInitial));
       productListApiCall();
-
-
     }
   }, [
     categorySlug,
@@ -342,19 +323,14 @@ useEffect(()=>{
     paramsForRating,
     productDiscountPercent,
     discountOfferId,
-    searchKeywords
+    searchKeywords,
   ]);
 
   useEffect(() => {
     if (!router.isReady) return;
- 
   }, [router.isReady]);
 
-  
-
   useEffect(() => {
- 
-
     if (query) {
       if (query.category) {
         dispatch(getProductsByCategory(query.category));
@@ -373,9 +349,7 @@ useEffect(()=>{
     }
   }, []);
 
-
   const breadCrumb = [
-   
     {
       text: crumbArray && crumbArray.length !== 0 && crumbArray,
       href: {
@@ -396,8 +370,9 @@ useEffect(()=>{
       },
 
       as: {
-        pathname: `/${crumbArray && crumbArray.length !== 0 && crumbArray[0].categorySlug
-          }`,
+        pathname: `/${
+          crumbArray && crumbArray.length !== 0 && crumbArray[0].categorySlug
+        }`,
         query: {
           attribute: "",
           priceTo: 50000000000,
@@ -413,24 +388,22 @@ useEffect(()=>{
         },
       },
     },
-
   ];
 
   const Handleclick = () => {
-    document.getElementById('filters').classList.toggle("openfilter");
-  }
+    document.getElementById("filters").classList.toggle("openfilter");
+  };
   return (
     <div className="site-content">
-
-     
-
-    
-      <HeaderDefault />
+      {/* <HeaderDefault /> */}
       <HeaderMobile />
       <NavigationList />
       <ThemeChanger />
-      
-      <div style={{ backgroundColor: "#f1f3f6", padding: "16px" }} className="container-fluid other-container">
+
+      <div
+        style={{ backgroundColor: "#f1f3f6", padding: "16px" }}
+        className="container-fluid other-container"
+      >
         <div
           style={{
             backgroundColor: "#fff",
@@ -438,62 +411,67 @@ useEffect(()=>{
             marginBottom: "16px",
           }}
         >
-        
-          
           <div className="ps-breadcrumb leftfilter">
-
             {crumbArray && crumbArray.length !== 0 && (
-
               <div className="fullwidth d-flex justify-content-between">
-
                 {breadCrumb.length >= 1 && (
                   <>
-
-                    {breadCrumb && breadCrumb.map((value, index) => (
-                      <>
-                        {/* <Link href={value.href} as={value.as}> */}
+                    {breadCrumb &&
+                      breadCrumb.map((value, index) => (
+                        <>
+                          {/* <Link href={value.href} as={value.as}> */}
                           <ul className="categorypage breadcrumb">
-                          <li><Link href={"/"}>Home</Link></li>
-                            {value.text && value.text.map((val, index) => (
-                              <React.Fragment>
-
-                                <li key={index}>
-                                  {/* <a>{val.categoryName}</a> */}
-                                  {value && value.text.length == index+1 ? val.categoryName:<Link href={"/"+val.categorySlug}>{val.categoryName}</Link>}
-                                </li>
-                                <Head>
-                                  <title>{val.metaTagTitle}</title>
-                                  <meta name="keywords" content={val.metaTagKeyword} />
-                                  <meta name="description" content={val.metaTagDescription} />
-                                </Head>
-                              </React.Fragment>
-                            ))}
-                            
+                            <li>
+                              <Link href={"/"}>Home</Link>
+                            </li>
+                            {value.text &&
+                              value.text.map((val, index) => (
+                                <React.Fragment>
+                                  <li key={index}>
+                                    {/* <a>{val.categoryName}</a> */}
+                                    {value && value.text.length == index + 1 ? (
+                                      val.categoryName
+                                    ) : (
+                                      <Link href={"/" + val.categorySlug}>
+                                        {val.categoryName}
+                                      </Link>
+                                    )}
+                                  </li>
+                                  <Head>
+                                    <title>{val.metaTagTitle}</title>
+                                    <meta
+                                      name="keywords"
+                                      content={val.metaTagKeyword}
+                                    />
+                                    <meta
+                                      name="description"
+                                      content={val.metaTagDescription}
+                                    />
+                                  </Head>
+                                </React.Fragment>
+                              ))}
                           </ul>
-                        {/* </Link> */}
-                      </>
-                    ))}
+                          {/* </Link> */}
+                        </>
+                      ))}
                   </>
                 )}
-              <span className="product-count-list">Total products - {totalProductCount}</span>
+                <span className="product-count-list">
+                  Total products - {totalProductCount}
+                </span>
               </div>
-
             )}
-            <div style={{marginLeft:'25px'}} onClick={e => Handleclick()}>
-             <i className='fa fa-filter'/>
-             </div>
+            <div style={{ marginLeft: "25px" }} onClick={(e) => Handleclick()}>
+              <i className="fa fa-filter" />
+            </div>
           </div>
         </div>
 
-        
         <div className="ps-layout--shop">
-         
           <ShopWidget
-               type={categorySlug !== "" ? "specific " : "normal"}
-               categoryMain={
-                 categorySlug !== ""
-                   ? specificCat
-                   : props.product.categories 
+            type={categorySlug !== "" ? "specific " : "normal"}
+            categoryMain={
+              categorySlug !== "" ? specificCat : props.product.categories
             }
             setInitialLoad={setInitialLoad}
             brands={brands}
@@ -502,9 +480,9 @@ useEffect(()=>{
             maxPrice={maxPrice}
             setMaxPrice={setMaxPrice}
             setCategoryInitial={setCategoryInitial}
-            setAnkleInitial = {setAnkleInitial}
-            setColorInitial = {setColorInitial}
-            setSizeInitial = {setSizeInitial}
+            setAnkleInitial={setAnkleInitial}
+            setColorInitial={setColorInitial}
+            setSizeInitial={setSizeInitial}
             manuIdArray={manuIdArray}
             setManuIdArray={setManuIdArray}
             brandFinal={brandFinal}
@@ -568,7 +546,6 @@ useEffect(()=>{
                 searchKeywords={searchKeywords}
                 productDiscountPercent={productDiscountPercent}
                 discountOfferId={discountOfferId}
-                
               />
             ) : (
               <LayoutShop
@@ -602,14 +579,12 @@ useEffect(()=>{
                 searchKeywords={searchKeywords}
                 productDiscountPercent={productDiscountPercent}
                 discountOfferId={discountOfferId}
-                
               />
             )}
           </div>
         </div>
-    
       </div>
-     
+
       <FooterFullwidth />
     </div>
   );
