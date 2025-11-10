@@ -7,12 +7,10 @@ export default function EyeCheckupForm() {
   const { id, name, mobile, address } = router.query;
 
   const [formData, setFormData] = useState({
-    appointmentId: "",
+    id: "",
     patientName: "",
     mobile: "",
     address: "",
-    age: "",
-    gender: "",
     visionLeft: "",
     visionRight: "",
     eyePressure: "",
@@ -20,12 +18,11 @@ export default function EyeCheckupForm() {
     remarks: "",
   });
 
-  // Prefill form when appointment data arrives
   useEffect(() => {
     if (id || name || mobile || address) {
       setFormData((prev) => ({
         ...prev,
-        appointmentId: id || "",
+        id: id || "",
         patientName: name || "",
         mobile: mobile || "",
         address: address || "",
@@ -37,10 +34,26 @@ export default function EyeCheckupForm() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitted Eye Checkup Data:", formData);
-    // 👉 TODO: Call your API to save form data
+    console.log("Submitting Eye Checkup Data:", formData);
+
+    // ✅ Example: send data to your backend API
+    try {
+      const res = await fetch(
+        "http://192.168.100.59:4200/api/eye-checkup/save",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        }
+      );
+      const result = await res.json();
+      console.log("Response:", result);
+      alert("Eye checkup form submitted successfully!");
+    } catch (err) {
+      console.error("Error submitting form:", err);
+    }
   };
 
   return (
@@ -48,14 +61,8 @@ export default function EyeCheckupForm() {
       <h2>Eye Checkup Form</h2>
 
       <form onSubmit={handleSubmit}>
-        {/* Hidden appointment ID */}
-        <input
-          type="hidden"
-          name="appointmentId"
-          value={formData.appointmentId}
-        />
+        <input type="hidden" name="id" value={formData.id} />
 
-        {/* Patient Name */}
         <div className={styles.formGroup}>
           <label>Patient Name</label>
           <input
@@ -66,7 +73,6 @@ export default function EyeCheckupForm() {
           />
         </div>
 
-        {/* Mobile Number */}
         <div className={styles.formGroup}>
           <label>Mobile Number</label>
           <input
@@ -77,19 +83,17 @@ export default function EyeCheckupForm() {
           />
         </div>
 
-        {/* Address */}
         <div className={styles.formGroup}>
           <label>Address</label>
           <textarea
             name="address"
-            rows="2"
             value={formData.address}
             onChange={handleChange}
           ></textarea>
         </div>
 
-        {/* Age */}
-        <div className={styles.formGroup}>
+        {/* Other Eye Checkup Fields */}
+        {/* <div className={styles.formGroup}>
           <label>Age</label>
           <input
             type="number"
@@ -99,17 +103,15 @@ export default function EyeCheckupForm() {
           />
         </div>
 
-        {/* Gender */}
         <div className={styles.formGroup}>
           <label>Gender</label>
           <select name="gender" value={formData.gender} onChange={handleChange}>
-            <option value="">Select Gender</option>
+            <option value="">Select</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
           </select>
-        </div>
+        </div> */}
 
-        {/* Left Eye Vision */}
         <div className={styles.formGroup}>
           <label>Left Eye Vision</label>
           <input
@@ -120,7 +122,6 @@ export default function EyeCheckupForm() {
           />
         </div>
 
-        {/* Right Eye Vision */}
         <div className={styles.formGroup}>
           <label>Right Eye Vision</label>
           <input
@@ -131,7 +132,6 @@ export default function EyeCheckupForm() {
           />
         </div>
 
-        {/* Eye Pressure */}
         <div className={styles.formGroup}>
           <label>Eye Pressure</label>
           <input
@@ -142,7 +142,6 @@ export default function EyeCheckupForm() {
           />
         </div>
 
-        {/* Lens Type */}
         <div className={styles.formGroup}>
           <label>Lens Type</label>
           <input
@@ -153,23 +152,17 @@ export default function EyeCheckupForm() {
           />
         </div>
 
-        {/* Doctor Remarks */}
         <div className={styles.formGroup}>
-          <label>Doctor Remarks</label>
+          <label>Remarks</label>
           <textarea
             name="remarks"
-            rows="3"
             value={formData.remarks}
             onChange={handleChange}
           ></textarea>
         </div>
 
-        {/* Submit & Reset */}
         <div className={styles.formActions}>
           <button type="submit">Submit</button>
-          <button type="reset" className="reset">
-            Reset
-          </button>
         </div>
       </form>
     </div>
