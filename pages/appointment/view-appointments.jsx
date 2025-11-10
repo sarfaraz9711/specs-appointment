@@ -5,37 +5,48 @@ import Router from "next/router";
 
 export default function ViewAppointments() {
   const [getListData, setListData] = useState([]);
-  const [getFilterDate, setFilterDate] = useState("");
+  const [getFilterDate, setFilterDate] = useState(
+    moment().format("YYYY-MM-DD")
+  );
   const [isAuthorized, setIsAuthorized] = useState(true);
+  const [userDetails, setUserDetails] = useState(null);
 
   useEffect(() => {
-    // ✅ Check if user is logged in and is an agent
-    const userDetails =
+    const user =
       JSON.parse(localStorage.getItem("getUserDetails")) ||
       JSON.parse(localStorage.getItem("spurtUser"));
 
-    if (!userDetails || userDetails.customerType !== 2) {
-      // 🚫 Not an agent → not authorized
+    if (!user || user.customerType !== 2) {
       setIsAuthorized(false);
       return;
     }
 
-    // ✅ Agent allowed → load list
-    getList(new Date());
+    setUserDetails(user);
+    getList(moment().format("YYYY-MM-DD"), user.id);
   }, []);
 
-  const getList = async (date) => {
-    setFilterDate(moment(date).format("DD-MM-YYYY"));
-    const json = { appointmentDate: moment(date).format("YYYY-MM-DD") };
-    const result = await getListOfAppointments(json);
+  const getList = async (date, agentId) => {
+    setFilterDate(moment(date).format("YYYY-MM-DD"));
+    const json = {
+      appointmentDate: moment(date).format("YYYY-MM-DD"),
+      agentId: agentId,
+    };
 
+    const result = await getListOfAppointments(json);
     if (result?.status === 200) {
       setListData(result.data);
     }
   };
 
+  const handleDateChange = (e) => {
+    const selectedDate = e.target.value;
+    setFilterDate(selectedDate);
+    if (userDetails) {
+      getList(selectedDate, userDetails.id);
+    }
+  };
+
   const openAppointment = (data) => {
-    // ✅ Pass appointment data via URL query to eye-checkup form
     Router.push({
       pathname: "/appointment/eye-checkup",
       query: {
@@ -47,7 +58,6 @@ export default function ViewAppointments() {
     });
   };
 
-  // 🚫 Unauthorized user view
   if (!isAuthorized) {
     return (
       <div
@@ -66,10 +76,38 @@ export default function ViewAppointments() {
     );
   }
 
-  // ✅ Authorized agent view
   return (
     <div className="container mt-3">
-      <h4>Appointments List ({getFilterDate})</h4>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "20px",
+        }}
+      >
+        <h4>Appointments List</h4>
+
+        {/* 📅 Calendar for selecting date */}
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <label htmlFor="appointment-date" style={{ fontWeight: "500" }}>
+            Select Date:
+          </label>
+          <input
+            id="appointment-date"
+            type="date"
+            value={getFilterDate}
+            onChange={handleDateChange}
+            style={{
+              padding: "6px 10px",
+              borderRadius: "6px",
+              border: "1px solid #ccc",
+              cursor: "pointer",
+            }}
+          />
+        </div>
+      </div>
+
       {getListData.length > 0 ? (
         getListData.map((item) => (
           <div
@@ -101,7 +139,7 @@ export default function ViewAppointments() {
           </div>
         ))
       ) : (
-        <p>No appointments found for today.</p>
+        <p>No appointments found for this date.</p>
       )}
     </div>
   );
