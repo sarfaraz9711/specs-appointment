@@ -1,0 +1,60 @@
+.carouselWrapper {
+  width: 100%;
+  height: 380px;
+
+  .carousel-item {
+    position: relative;
+  }
+}
+
+.imageContainer {
+  position: relative;
+  width: 100%;
+  height: 380px;
+
+  img {
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+    border-radius: 12px;
+    filter: brightness(70%); // slight dark effect
+  }
+}
+
+.overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  width: 80%;
+
+  h2 {
+    font-size: 32px;
+    font-weight: 700;
+    text-shadow: 0px 0px 8px rgba(0, 0, 0, 0.6);
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 15px;
+  }
+
+  button {
+    background: #ff6b00;
+    padding: 10px 22px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+      background: #e85b00;
+    }
+  }
+}
