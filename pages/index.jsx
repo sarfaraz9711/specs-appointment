@@ -38,6 +38,8 @@ import { getProductVariants } from "../api/filter/getVariants";
 import DisplayImageWithS3PreSignedUrl from "../components/elements/AwsS3PreSignedUrl";
 import HomeCarousel from "../components/HomeBannerCarousel/HomeCarousel";
 import ContactForm from "../components/partials/page/ContactForm";
+import ExpertiseAccordion from "../components/partials/page/ExpertiseAccordion";
+import PatientStories from "../components/partials/page/PatientStories";
 const { TabPane } = Tabs;
 
 function Index(props) {
@@ -529,6 +531,8 @@ function Index(props) {
 
       <HomeCarousel />
       <ContactForm />
+      <ExpertiseAccordion />
+      <PatientStories />
       <div className={`d-none site-content ${homeClass}`}>
         <HeaderDefault />
         <HeaderMobile />

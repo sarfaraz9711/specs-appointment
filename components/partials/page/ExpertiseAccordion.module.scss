@@ -1,0 +1,64 @@
+.wrapper {
+  width: 100%;
+  background: #e3f2f2;
+  padding: 60px 0;
+}
+
+.container {
+  width: 85%;
+  margin: auto;
+}
+
+.heading {
+  font-size: 22px;
+  font-weight: 500;
+  color: #37475a;
+  margin-bottom: 40px;
+}
+
+.accordionItem {
+  margin-bottom: 25px;
+}
+
+.titleRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.title {
+  font-size: 40px;
+  font-weight: 500;
+  color: #263648;
+}
+
+.icon {
+  font-size: 40px;
+  font-weight: 400;
+  color: #263648;
+  margin-left: 20px;
+}
+
+.content {
+  margin-top: 10px;
+  font-size: 18px;
+  color: #2b3a4b;
+  padding-right: 50px;
+}
+
+.underline {
+  width: 100%;
+  height: 2px;
+  background: #444;
+  margin-top: 20px;
+}
+
+@media (max-width: 800px) {
+  .title {
+    font-size: 32px;
+  }
+  .icon {
+    font-size: 32px;
+  }
+}

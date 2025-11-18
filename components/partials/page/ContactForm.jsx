@@ -261,6 +261,17 @@ const ContactForm = () => {
     }
   };
 
+  const handlePhoneChange = (value) => {
+    // Allow only digits
+    const onlyNums = value.replace(/\D/g, "");
+
+    // Allow max 10 digits
+    if (onlyNums.length <= 10) {
+      setPhone(onlyNums);
+      setPhoneError("");
+    }
+  };
+
   const messageValid = (value) => {
     setMessage(value);
 
@@ -387,7 +398,7 @@ const ContactForm = () => {
                 type="email"
                 // value={email}
                 value={mail}
-                onChange={(e) => setMail(e.target.value)}
+                onChange={(e) => emailCheck(e.target.value)}
               />
               {submit === 1 && mailError && (
                 <div className="error-div">{mailError}</div>
@@ -396,11 +407,18 @@ const ContactForm = () => {
 
             <div className={styles.inputGroup}>
               <label>Phone</label>
-              <input
+              {/* <input
                 type="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
+              /> */}
+              <input
+                type="tel"
+                value={phone}
+                maxLength="10"
+                onChange={(e) => handlePhoneChange(e.target.value)}
               />
+
               {submit === 1 && phoneError && (
                 <div className="error-div">{phoneError}</div>
               )}
@@ -419,7 +437,14 @@ const ContactForm = () => {
             )}
           </div>
 
-          <button type="submit" className={styles.submitBtn}>
+          {/* <button type="submit" className={styles.submitBtn}>
+            Submit
+          </button> */}
+          <button
+            type="submit"
+            className={styles.submitBtn}
+            onClick={handleSubmit}
+          >
             Submit
           </button>
         </form>

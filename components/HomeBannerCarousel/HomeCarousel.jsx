@@ -47,7 +47,7 @@ export default function HomeCarousel() {
                   resizeRequired="NO"
                 />
 
-                <div className={styles.overlay}>
+                {/* <div className={styles.overlay}>
                   <h2>{item.title || "Vira Opticals"}</h2>
                   <p>{item.content || "Premium Eyewear Collection"}</p>
 
@@ -56,7 +56,7 @@ export default function HomeCarousel() {
                       <button>Explore</button>
                     </a>
                   ) : null}
-                </div>
+                </div> */}
               </div>
             </Carousel.Item>
           ))}

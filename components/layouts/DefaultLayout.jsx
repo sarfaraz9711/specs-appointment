@@ -4,6 +4,7 @@ import Head from "./modules/Head";
 import BackToTop from "../elements/BackToTop";
 import Router from "next/router";
 import HeaderDefault from "../shared/headers/HeaderDefault";
+import FooterDefault from "../shared/footers/FooterDefault";
 const routeNavigate = (val) => {
   Router.push(val);
 };
@@ -13,6 +14,7 @@ const DefaultLayout = ({ children }) => (
     <Head />
     <HeaderDefault />
     {children}
+    <FooterDefault />
     <div id="loader-wrapper">
       <div className="loader-section section-left"></div>
       <div className="loader-section section-right"></div>
