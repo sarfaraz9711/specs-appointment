@@ -165,39 +165,6 @@ const ContactForm = () => {
 
   const currentColor = useSelector((s) => s.palette.currentColor);
 
-  //   const handleSubmit = (e) => {
-  //     e.preventDefault();
-  //     setSubmit(1);
-
-  //     let isValid = true;
-
-  //     if (name === "") {
-  //       setNameError("* Name is required");
-  //       isValid = false;
-  //     }
-
-  //     if (mail === "") {
-  //       setMailError("* Mail is required");
-  //       isValid = false;
-  //     }
-
-  //     if (phone === "") {
-  //       setPhoneError("* Phone number is required");
-  //       isValid = false;
-  //     }
-
-  //     if (message === "" || message.length < 6) {
-  //       setMessageError("Minimum 6 characters is required");
-  //       isValid = false;
-  //     }
-
-  //     if (mailError !== "") isValid = false;
-
-  //     if (isValid) {
-  //       contactApi(name, mail, phone, message);
-  //     }
-  //   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmit(1);
@@ -224,30 +191,27 @@ const ContactForm = () => {
       isValid = false;
     }
 
+    if (message.length > 250) {
+      setMessageError("Message cannot exceed 250 characters");
+      isValid = false;
+    }
+
     if (mailError !== "") isValid = false;
 
-    if (isValid) {
-      console.log("FORM DATA:", {
-        name,
-        mail,
-        phone,
-        message,
-      });
+    if (!isValid) return;
 
-      const res = await contactApi(name, mail, phone, message);
+    const res = await contactApi(name, mail, phone, message);
 
-      if (res) {
-        toast.success("Message sent successfully!");
+    if (res?.status === 1) {
+      toast.success("Message sent successfully!", { autoClose: 2000 });
 
-        // Clear form after submission
-        setName("");
-        setMail("");
-        setPhone("");
-        setMessage("");
-        setSubmit(0);
-      } else {
-        toast.error("Something went wrong. Try again!");
-      }
+      setName("");
+      setMail("");
+      setPhone("");
+      setMessage("");
+      setSubmit(0);
+    } else {
+      toast.error(res?.message || "Something went wrong!", { autoClose: 2000 });
     }
   };
 
@@ -272,7 +236,25 @@ const ContactForm = () => {
     }
   };
 
+  //   const messageValid = (value) => {
+  //     setMessage(value);
+
+  //     if (value.length >= 6) {
+  //       setMessageError("");
+  //     } else {
+  //       setMessageError("Minimum 6 characters is required");
+  //     }
+  //   };
   const messageValid = (value) => {
+    // Do not allow single quote
+    if (value.includes("'")) {
+      setMessageError("Character ( ' ) is not allowed in message");
+      return;
+    }
+
+    // Max 250 chars
+    if (value.length > 250) return;
+
     setMessage(value);
 
     if (value.length >= 6) {
@@ -379,11 +361,22 @@ const ContactForm = () => {
           <div className={styles.row}>
             <div className={styles.inputGroup}>
               <label>Name *</label>
-              <input
+              {/* <input
                 type="text"
                 // value={firstName}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+              />
+              {submit === 1 && nameError && (
+                <div className="error-div">{nameError}</div>
+              )} */}
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  if (e.target.value.trim() !== "") setNameError("");
+                }}
               />
               {submit === 1 && nameError && (
                 <div className="error-div">{nameError}</div>
@@ -427,11 +420,18 @@ const ContactForm = () => {
 
           <div className={styles.inputGroupFull}>
             <label>Message</label>
+            {/* <textarea
+              rows="4"
+              value={message}
+              onChange={(e) => messageValid(e.target.value)}
+            /> */}
             <textarea
               rows="4"
               value={message}
-              onChange={(e) => setMessage(e.target.value)}
+              onChange={(e) => messageValid(e.target.value)}
             />
+            <div className={styles.charCount}>{message.length}/250</div>
+
             {submit === 1 && messageError && (
               <div className="error-div">{messageError}</div>
             )}

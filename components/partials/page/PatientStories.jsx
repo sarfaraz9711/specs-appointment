@@ -1,105 +1,46 @@
-// import React, { useState } from "react";
-// import styles from "./PatientStories.module.scss";
-
-// export default function PatientStories() {
-//   const testimonials = [
-//     {
-//       quote:
-//         "The LASIK procedure was quick, and my vision has never been better. It’s truly transformed my daily life!",
-//       name: "Kevin Schuster",
-//       location: "Westwood Park",
-//     },
-//     {
-//       quote:
-//         "Amazing staff and exceptional service! I finally found eyewear that fits perfectly.",
-//       name: "Riya Sharma",
-//       location: "Delhi",
-//     },
-//     {
-//       quote:
-//         "Their eye checkup was accurate and professional. Highly recommended!",
-//       name: "Amit Verma",
-//       location: "Bangalore",
-//     },
-//   ];
-
-//   const [index, setIndex] = useState(0);
-
-//   const prev = () => {
-//     setIndex(index === 0 ? testimonials.length - 1 : index - 1);
-//   };
-
-//   const next = () => {
-//     setIndex(index === testimonials.length - 1 ? 0 : index + 1);
-//   };
-
-//   const current = testimonials[index];
-
-//   return (
-//     <div className={styles.wrapper}>
-//       <div className={styles.container}>
-//         <div className={styles.left}>
-//           <h2>Patient Stories</h2>
-//         </div>
-
-//         <div className={styles.right}>
-//           <div className={styles.reviewBox}>
-//             <span className={styles.leftArrow} onClick={prev}>
-//               &#10094;
-//             </span>
-
-//             <div className={styles.textContent}>
-//               <p className={styles.quote}>"{current.quote}"</p>
-//               <p className={styles.author}>
-//                 {current.name}, {current.location}
-//               </p>
-//             </div>
-
-//             <span className={styles.rightArrow} onClick={next}>
-//               &#10095;
-//             </span>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
 import React, { useState, useEffect } from "react";
 import styles from "./PatientStories.module.scss";
 
 export default function PatientStories() {
-  const testimonials = [
-    {
-      quote:
-        "The LASIK procedure was quick, and my vision has never been better. It’s truly transformed my daily life!",
-      name: "Kevin Schuster",
-      location: "Westwood Park",
-    },
-    {
-      quote:
-        "Amazing staff and exceptional service! I finally found eyewear that fits perfectly.",
-      name: "Riya Sharma",
-      location: "Delhi",
-    },
-    {
-      quote:
-        "Their eye checkup was accurate and professional. Highly recommended!",
-      name: "Amit Verma",
-      location: "Bangalore",
-    },
-  ];
-
+  const [testimonials, setTestimonials] = useState([]);
   const [index, setIndex] = useState(0);
   const [fade, setFade] = useState(false);
 
-  // Auto-slide every 4 seconds
   useEffect(() => {
-    const interval = setInterval(() => {
+    fetch("http://192.168.100.59:4200/api/feedback-patient/feedback-list", {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("API data:feedback--->>>>>", data);
+        if (data?.data?.length) {
+          const formatted = data.data
+            .filter((item) => item.isActive === 1)
+            .map((item) => ({
+              quote: item.feedback,
+              name: item.name,
+              location: item.address,
+            }));
+
+          setTestimonials(formatted);
+        }
+      })
+      .catch((err) => console.error("Feedback API Error:", err));
+  }, []);
+
+  useEffect(() => {
+    if (testimonials.length === 0) return;
+
+    const autoSlide = setInterval(() => {
       next();
     }, 4000);
-    return () => clearInterval(interval);
-  }, [index]);
+
+    return () => clearInterval(autoSlide);
+  }, [index, testimonials]);
 
   const prev = () => {
     setFade(true);
@@ -117,17 +58,19 @@ export default function PatientStories() {
     }, 300);
   };
 
+  if (testimonials.length === 0) {
+    return <div className={styles.wrapper}>Loading...</div>;
+  }
+
   const current = testimonials[index];
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
-        {/* LEFT TITLE SECTION */}
         <div className={styles.left}>
           <h2>Patient Stories</h2>
         </div>
 
-        {/* RIGHT CAROUSEL SECTION */}
         <div className={styles.right}>
           <div className={styles.reviewBox}>
             <span className={styles.leftArrow} onClick={prev}>
@@ -150,7 +93,6 @@ export default function PatientStories() {
             </span>
           </div>
 
-          {/* Slider Dots */}
           <div className={styles.dots}>
             {testimonials.map((_, i) => (
               <span

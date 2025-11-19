@@ -197,7 +197,7 @@ function HeaderDefault() {
                       display: getSearchBarActive ? "none" : "inline-block",
                     }}
                   >
-                    <li
+                    {/* <li
                       className="list-inline-item marquee"
                       style={{ color: "red" }}
                     >
@@ -209,7 +209,7 @@ function HeaderDefault() {
                           Loyalty Rewards | T&C Applied
                         </span>
                       </div>
-                    </li>
+                    </li> */}
                   </ul>
                   <div
                     className="search-hidden flex-grow-1"

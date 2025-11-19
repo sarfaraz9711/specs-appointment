@@ -23,70 +23,62 @@
 // import React from "react";
 // import styles from "./FooterDefault.module.scss";
 
-// const FooterDefault = () => {
+// export default function FooterDefault() {
 //   return (
 //     <footer className={styles.footer}>
+//       {/* Top Blue Bar */}
 //       <div className={styles.topBar}></div>
 
-//       <div className="container">
-//         <div className={styles.footerContent}>
-//           {/* LEFT SIDE — NAME */}
-//           <div className={styles.leftSection}>
-//             <h1>L. Verma</h1>
+//       {/* Main Footer Content */}
+//       <div className={styles.footerContent}>
+//         {/* LEFT SIDE */}
+//         <div className={styles.leftSection}>
+//           <h1>L. Verma</h1>
+//         </div>
+
+//         {/* RIGHT SIDE */}
+//         <div className={styles.rightSection}>
+//           <div className={styles.contactBlock}>
+//             <p>500 Terry Francine Street</p>
+//             <p>San Francisco, CA 94158</p>
 //           </div>
 
-//           {/* RIGHT SIDE — CONTACT + LINKS */}
-//           <div className={styles.rightSection}>
-//             <div className={styles.contactBlock}>
-//               <p>500 Terry Francine Street</p>
-//               <p>San Francisco, CA 94158</p>
-//             </div>
+//           <div className={styles.contactBlock}>
+//             <p>info@mysite.com</p>
+//             <p>123 456 7890</p>
+//           </div>
 
-//             <div className={styles.contactBlock}>
-//               <p>info@mysite.com</p>
-//               <p>123 456 7890</p>
-//             </div>
+//           <div className={styles.linkBlock}>
+//             <p>Privacy Policy</p>
+//             <p>Accessibility Statement</p>
+//           </div>
 
-//             <div className={styles.linkBlock}>
-//               <p>Privacy Policy</p>
-//               <p>Accessibility Statement</p>
-//             </div>
-
-//             <div className={styles.copyRight}>
-//               <p>© 2035 by L. Verma</p>
-//               <p>
-//                 Powered and secured by{" "}
-//                 <a href="https://wix.com" target="_blank" rel="noreferrer">
-//                   Wix
-//                 </a>
-//               </p>
-//             </div>
+//           <div className={styles.copyBlock}>
+//             <p>© 2035 by L. Verma</p>
+//             <p>
+//               Powered and secured by <a href="#">Wix</a>
+//             </p>
 //           </div>
 //         </div>
 //       </div>
 //     </footer>
 //   );
-// };
+// }
 
-// export default FooterDefault;
-
+import Link from "next/link";
 import React from "react";
 import styles from "./FooterDefault.module.scss";
 
 export default function FooterDefault() {
   return (
     <footer className={styles.footer}>
-      {/* Top Blue Bar */}
       <div className={styles.topBar}></div>
 
-      {/* Main Footer Content */}
       <div className={styles.footerContent}>
-        {/* LEFT SIDE */}
         <div className={styles.leftSection}>
           <h1>L. Verma</h1>
         </div>
 
-        {/* RIGHT SIDE */}
         <div className={styles.rightSection}>
           <div className={styles.contactBlock}>
             <p>500 Terry Francine Street</p>
@@ -99,7 +91,10 @@ export default function FooterDefault() {
           </div>
 
           <div className={styles.linkBlock}>
-            <p>Privacy Policy</p>
+            <Link href="/privacy-policy">
+              <p className={styles.link}>Privacy Policy</p>
+            </Link>
+
             <p>Accessibility Statement</p>
           </div>
 

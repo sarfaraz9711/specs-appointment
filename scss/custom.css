@@ -288,7 +288,7 @@ footer .f-Search{min-height:270px;}
 .checkout-box-right .promotionalBox .promotionalAmount{margin-top:5px;}
 .checkout-box-right .promotionalAmount .custom-td-total{padding-right:0 !important;}
 .ReactModal__Content--after-open.login-details{position:fixed !important; right: 10px;
-	inset: auto !important; margin: 0 !important; top: 40px !important; right: 13px !important;
+	inset: auto !important; margin: 1 !important; top: 40px !important; right: 13px !important;
 }
 /*-----------------------------custom-checkout css end---------------------*/
 /*---------------------------------payment popup-----------------------*/
