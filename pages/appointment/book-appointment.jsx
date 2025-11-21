@@ -9,6 +9,7 @@ import {
 import moment from "moment";
 import { useSelector } from "react-redux";
 import { Modal } from "react-bootstrap";
+import Router from "next/router";
 export default function AppointmentBooking() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
@@ -477,6 +478,18 @@ export default function AppointmentBooking() {
     <>
       {" "}
       <div className="appointment-container">
+        {/* Try Frame Button */}
+        <div
+          className="try-frame-wrapper"
+          style={{ textAlign: "right", marginBottom: "15px" }}
+        >
+          <button
+            className="btn btn-secondary"
+            onClick={() => Router.push("/appointment/camera")}
+          >
+            Try Frame
+          </button>
+        </div>
         {getNextAppointment && (
           <div className="appointment-alert">
             Hi {getUserDetails.firstName}, Your next appointment is on{" "}

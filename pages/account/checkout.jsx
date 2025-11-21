@@ -57,7 +57,7 @@ const OrderTrackingPage = () => {
         <Checkout />
       </div>
       {/* <Newsletters layout="container" /> */}
-      <FooterFullwidth />
+      {/* <FooterFullwidth /> */}
     </div>
   );
 };

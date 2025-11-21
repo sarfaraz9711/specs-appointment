@@ -99,7 +99,103 @@
 
 // // MyApp.getInitialProps = async (appContext) => ({ ...await App.getInitialProps(appContext) })
 
-import App from "next/app";
+// import App from "next/app";
+// import React, { useEffect } from "react";
+// import { Provider, useDispatch, useSelector } from "react-redux";
+// import configureStore from "../store/store";
+// import DefaultLayout from "../components/layouts/DefaultLayout";
+// import { createWrapper } from "next-redux-wrapper";
+// import { appWithTranslation } from "../i18n";
+// import "../scss/style.scss";
+// import "bootstrap/dist/css/bootstrap.min.css";
+// import getProfileApi from "../api/home/getProfile";
+// import getPageApi from "../api/home/getPage";
+// import {
+//   colorThemeCurrent,
+//   viewcolorThemeCurrent,
+// } from "../store/colorPalette/action";
+// import Router, { useRouter } from "next/router";
+// import { Flip, ToastContainer, Zoom } from "react-toastify";
+// import "react-toastify/scss/main.scss";
+// import { LanguageSwitcherAPi } from "../api/account/languageSwitcherAPi";
+// import { GoogleAnalytics } from "nextjs-google-analytics";
+// import NextNProgress from "nextjs-progressbar";
+// import { GA_TAG_ID, loginWithGoogleClientID } from "../utilities/app-settings";
+// import { GoogleOAuthProvider } from "@react-oauth/google";
+
+// function MyApp({ Component, pageProps }) {
+//   const router = useRouter();
+
+//   const authcheck = router.pathname.includes("/account/");
+//   const RedirectMaintain = useSelector((s) => s.setting.maintenance);
+
+//   useEffect(() => {
+//     if (RedirectMaintain === 1 && !sessionStorage.getItem("maintenance")) {
+//       Router.push("/maintenance");
+//     }
+//   }, []);
+
+//   useEffect(() => {
+//     if (router.pathname.includes("/customer-orders/")) {
+//       if (localStorage.getItem("spurtToken") == null) {
+//         router.push("/account/login");
+//       }
+//     }
+//   }, []);
+
+//   const dispatch = useDispatch();
+
+//   useEffect(() => {
+//     setTimeout(function () {
+//       document.getElementById("__next").classList.add("loaded");
+//     }, 100);
+//     getProfileApi(dispatch);
+
+//     localStorage.getItem("colorThemeSpurt") &&
+//       dispatch(colorThemeCurrent(localStorage.getItem("colorThemeSpurt")));
+//     localStorage.getItem("colorThemeSpurtView") &&
+//       dispatch(
+//         viewcolorThemeCurrent(localStorage.getItem("colorThemeSpurtView"))
+//       );
+//   }, []);
+
+//   const getLayout =
+//     Component.getLayout || ((page) => <DefaultLayout children={page} />);
+
+//   return getLayout(
+//     <Provider store={configureStore}>
+//       <NextNProgress
+//         color="#29D"
+//         startPosition={0.3}
+//         stopDelayMs={200}
+//         height={2}
+//         showOnShallow={true}
+//       />
+
+//       <GoogleOAuthProvider clientId={loginWithGoogleClientID}>
+//         <Component {...pageProps} />
+//       </GoogleOAuthProvider>
+
+//       <ToastContainer
+//         transition={Zoom}
+//         theme="colored"
+//         autoClose={3000}
+//         hideProgressBar={true}
+//         newestOnTop={true}
+//         draggable={false}
+//         pauseOnVisibilityChange
+//         closeOnClick
+//         pauseOnHover
+//       />
+//     </Provider>
+//   );
+// }
+
+// const makestore = () => configureStore;
+// const wrappers = createWrapper(makestore);
+
+// export default wrappers.withRedux(appWithTranslation(MyApp));
+
 import React, { useEffect } from "react";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import configureStore from "../store/store";
@@ -109,24 +205,22 @@ import { appWithTranslation } from "../i18n";
 import "../scss/style.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 import getProfileApi from "../api/home/getProfile";
-import getPageApi from "../api/home/getPage";
 import {
   colorThemeCurrent,
   viewcolorThemeCurrent,
 } from "../store/colorPalette/action";
 import Router, { useRouter } from "next/router";
-import { Flip, ToastContainer, Zoom } from "react-toastify";
+import { ToastContainer, Zoom } from "react-toastify";
 import "react-toastify/scss/main.scss";
-import { LanguageSwitcherAPi } from "../api/account/languageSwitcherAPi";
-import { GoogleAnalytics } from "nextjs-google-analytics";
 import NextNProgress from "nextjs-progressbar";
-import { GA_TAG_ID, loginWithGoogleClientID } from "../utilities/app-settings";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { loginWithGoogleClientID } from "../utilities/app-settings";
+
+const store = configureStore;
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
-
-  const authcheck = router.pathname.includes("/account/");
+  const dispatch = useDispatch();
   const RedirectMaintain = useSelector((s) => s.setting.maintenance);
 
   useEffect(() => {
@@ -137,61 +231,52 @@ function MyApp({ Component, pageProps }) {
 
   useEffect(() => {
     if (router.pathname.includes("/customer-orders/")) {
-      if (localStorage.getItem("spurtToken") == null) {
+      if (!localStorage.getItem("spurtToken")) {
         router.push("/account/login");
       }
     }
   }, []);
 
-  const dispatch = useDispatch();
-
   useEffect(() => {
-    setTimeout(function () {
+    setTimeout(() => {
       document.getElementById("__next").classList.add("loaded");
     }, 100);
+
     getProfileApi(dispatch);
 
-    localStorage.getItem("colorThemeSpurt") &&
-      dispatch(colorThemeCurrent(localStorage.getItem("colorThemeSpurt")));
-    localStorage.getItem("colorThemeSpurtView") &&
-      dispatch(
-        viewcolorThemeCurrent(localStorage.getItem("colorThemeSpurtView"))
-      );
+    const theme1 = localStorage.getItem("colorThemeSpurt");
+    const theme2 = localStorage.getItem("colorThemeSpurtView");
+
+    if (theme1) dispatch(colorThemeCurrent(theme1));
+    if (theme2) dispatch(viewcolorThemeCurrent(theme2));
   }, []);
 
-  const getLayout =
-    Component.getLayout || ((page) => <DefaultLayout children={page} />);
-
-  return getLayout(
-    <Provider store={configureStore}>
-      <NextNProgress
-        color="#29D"
-        startPosition={0.3}
-        stopDelayMs={200}
-        height={2}
-        showOnShallow={true}
-      />
-
+  return (
+    <Provider store={store}>
       <GoogleOAuthProvider clientId={loginWithGoogleClientID}>
-        <Component {...pageProps} />
-      </GoogleOAuthProvider>
+        {/* 👇 DEFAULT LAYOUT ALWAYS WRAPS EVERY PAGE */}
+        <DefaultLayout>
+          <NextNProgress color="#29D" height={2} />
 
-      <ToastContainer
-        transition={Zoom}
-        theme="colored"
-        autoClose={3000}
-        hideProgressBar={true}
-        newestOnTop={true}
-        draggable={false}
-        pauseOnVisibilityChange
-        closeOnClick
-        pauseOnHover
-      />
+          <Component {...pageProps} />
+
+          <ToastContainer
+            transition={Zoom}
+            theme="colored"
+            autoClose={3000}
+            hideProgressBar={true}
+            newestOnTop={true}
+            draggable={false}
+            closeOnClick
+            pauseOnHover
+          />
+        </DefaultLayout>
+      </GoogleOAuthProvider>
     </Provider>
   );
 }
 
-const makestore = () => configureStore;
-const wrappers = createWrapper(makestore);
+const makeStore = () => store;
+const wrapper = createWrapper(makeStore);
 
-export default wrappers.withRedux(appWithTranslation(MyApp));
+export default wrapper.withRedux(appWithTranslation(MyApp));

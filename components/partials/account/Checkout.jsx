@@ -4190,7 +4190,7 @@ function Checkout() {
                                 <p>Cash On Delivery</p>
                               </Radio> */}
                               <Radio
-                                value="cod"
+                                value={2}
                                 style={{
                                   display: "flex",
                                   alignItems: "center",
