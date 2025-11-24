@@ -129,14 +129,13 @@ export default function FooterDefault() {
       <div className={styles.inner}>
         {/* Left big intro */}
         <div className={styles.leftBlock}>
-          <h2 className={styles.title}>Buy Eyewear from Lenskart</h2>
+          <h2 className={styles.title}>Buy Eyewear from VSpecs</h2>
           <p className={styles.intro}>
-            LENSKART SOLUTIONS LIMITED (Earlier known as Lenskart Solutions
-            Private Limited) is a technology-driven eyewear company, with a
-            belief that clear vision is fundamental to personal development and
-            well-being. Our aim is to build tech-enabled supply and distribution
-            solutions that improve access to affordable and quality Eyewear for
-            All.
+            VSpecs SOLUTIONS LIMITED (Earlier known as VSpecs Solutions Private
+            Limited) is a technology-driven eyewear company, with a belief that
+            clear vision is fundamental to personal development and well-being.
+            Our aim is to build tech-enabled supply and distribution solutions
+            that improve access to affordable and quality Eyewear for All.
           </p>
           <p className={styles.introSmall}>
             We sell a wide range of eyewear products including prescription{" "}
@@ -194,7 +193,7 @@ export default function FooterDefault() {
               </li>
               <li>
                 <Link href="#">
-                  <a>Lenskart Coupons</a>
+                  <a>VSpecs Coupons</a>
                 </Link>
               </li>
             </ul>
@@ -239,7 +238,7 @@ export default function FooterDefault() {
           </div>
 
           <p className={styles.badgeText}>
-            Download Lenskart App to buy <br />
+            Download VSpecs App to buy <br />
             Eyeglasses, Sunglasses and Contact Lenses
           </p>
         </div>

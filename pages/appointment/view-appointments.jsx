@@ -357,6 +357,7 @@ export default function ViewAppointments() {
             <div>
               <div>Name: {item.fullName}</div>
               <div>Address: {item.address}</div>
+              {console.log("address----->>>>>>>>>>>>>>>", item?.address)}
               <div>Mobile: {item.mobile}</div>
             </div>
           </div>

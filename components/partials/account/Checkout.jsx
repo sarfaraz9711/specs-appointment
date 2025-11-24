@@ -2428,6 +2428,82 @@ function Checkout() {
     }
   };
 
+  // const onCheckoutApiCall = async (validateObj) => {
+  //   console.log("methodmethodmethod", method);
+
+  //   if (!method) {
+  //     setAlterMethod(true);
+  //   } else {
+  //     setAlterMethod(false);
+  //     setLoaderActive(false);
+  //     setButtonLoader(false);
+  //     validate();
+  //     arrayCreate();
+  //     let isLoggedIN = localStorage.getItem("spurtToken");
+  //     console.log(
+  //       "singh1",
+  //       isLoggedIN,
+  //       fname,
+  //       address,
+  //       number,
+  //       mail,
+  //       city,
+  //       postCode,
+  //       zoneName
+  //     );
+  //     if ((method === undefined || !prevAddressBillRadio) && isLoggedIN) {
+  //       validateObj.methodSub = false;
+  //     } else if (
+  //       !isLoggedIN &&
+  //       (fname == "" ||
+  //         address == "" ||
+  //         number == "" ||
+  //         mail == "" ||
+  //         city == "" ||
+  //         postCode == "" ||
+  //         zoneName == "")
+  //     ) {
+  //       modalError("error", "Please provide address");
+  //     } else {
+  //       const locale = JSON.parse(localStorage.getItem("cartItem"));
+  //       let skuList = [];
+  //       locale.forEach((element) => {
+  //         element.productvarientList &&
+  //           element.productvarientList.forEach((item) => {
+  //             if (element.variantId == item.id) {
+  //               skuList.push(item.skuName);
+  //             }
+  //           });
+  //       });
+  //       const result = await checkSkuStatus(skuList);
+  //       console.log("result", result);
+  //       let filterResult = [];
+  //       if (result.status == 200) {
+  //         filterResult = result.data.filter(
+  //           (item) =>
+  //             item.skuStatus == 0 ||
+  //             item.quantity == 0 ||
+  //             item.productStatus == 0
+  //         );
+  //       }
+
+  //       console.log("filterResult", filterResult);
+  //       if (filterResult.length == 0) {
+  //         setPageLoader(true);
+  //         setLoaderActive(true);
+  //         setOrderConfirmationBoxActive(true);
+  //         setPageLoader(false);
+  //         setLoaderActive(false);
+  //       } else {
+  //         setSkuValidation(true);
+  //         const allSku = filterResult.map((item) => item.sku).join(", ");
+
+  //         setSkuNameValidation(allSku);
+  //       }
+  //     }
+  //   }
+  // };
+
   const onCheckoutApiCall = async (validateObj) => {
     console.log("methodmethodmethod", method);
 
@@ -2440,6 +2516,7 @@ function Checkout() {
       validate();
       arrayCreate();
       let isLoggedIN = localStorage.getItem("spurtToken");
+
       console.log(
         "singh1",
         isLoggedIN,
@@ -2451,6 +2528,7 @@ function Checkout() {
         postCode,
         zoneName
       );
+
       if ((method === undefined || !prevAddressBillRadio) && isLoggedIN) {
         validateObj.methodSub = false;
       } else if (
@@ -2465,41 +2543,11 @@ function Checkout() {
       ) {
         modalError("error", "Please provide address");
       } else {
-        const locale = JSON.parse(localStorage.getItem("cartItem"));
-        let skuList = [];
-        locale.forEach((element) => {
-          element.productvarientList &&
-            element.productvarientList.forEach((item) => {
-              if (element.variantId == item.id) {
-                skuList.push(item.skuName);
-              }
-            });
-        });
-        const result = await checkSkuStatus(skuList);
-        console.log("result", result);
-        let filterResult = [];
-        if (result.status == 200) {
-          filterResult = result.data.filter(
-            (item) =>
-              item.skuStatus == 0 ||
-              item.quantity == 0 ||
-              item.productStatus == 0
-          );
-        }
-
-        console.log("filterResult", filterResult);
-        if (filterResult.length == 0) {
-          setPageLoader(true);
-          setLoaderActive(true);
-          setOrderConfirmationBoxActive(true);
-          setPageLoader(false);
-          setLoaderActive(false);
-        } else {
-          setSkuValidation(true);
-          const allSku = filterResult.map((item) => item.sku).join(", ");
-
-          setSkuNameValidation(allSku);
-        }
+        setPageLoader(true);
+        setLoaderActive(true);
+        setOrderConfirmationBoxActive(true);
+        setPageLoader(false);
+        setLoaderActive(false);
       }
     }
   };
